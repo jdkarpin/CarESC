@@ -90,10 +90,10 @@ void UpdatePort() {
 		ClearPin(DriverPortPower, DriverPinPower);
 	*/
 	
-	if ((PortTmpPrevious&0x7) == (PortTmp &0x7))
-		return
-	
-		
+	if ((PortTmpPrevious & DriverPinRight) == (PortTmp & TDriverPinRight) &&
+		(PortTmpPrevious & DriverPinLeft) == (PortTmp & TDriverPinLeft))
+		return;
+			
 	ClearPin(DriverPortLeft, DriverPinLeft);
 	ClearPin(DriverPortRight, DriverPinRight);
 	_delay_ms(100);
@@ -119,22 +119,124 @@ void UpdatePort() {
 	PortTmpPrevious = PortTmp;
 }
 
-int main(void)
-{
-	DDRD = 0x3;
-	PORTD = 0xFF;
-	DDRB = 0xFF;
-	PORTB = 0xFF;
-	
-	OCR0A=0x1; // przyk³adowe wartoœci 
-	OCR0B=0x50; 
-	TCCR0A=0b11110111; 
-	TCCR0B=0b00000010;
-	
-	
-	TCCR0B=0b00000010;
-	
-	
-	while(1);
+uint8_t tmp = 0xE0;
 
+uint8_t tmp2 = 0;
+uint32_t milis = 0;
+
+uint32_t fallingEdgeTime = 0;
+uint32_t risingEdgeTime = 0;
+
+ISR(TIMER1_COMPA_vect)
+{
+	
+	milis++;
+	
+	if (milis%100==0) {
+			OCR0A += 0x10;	
+	}
+	
+	if (milis%1000==0) {
+		if (tmp2 == 0) {
+			PORTB &= ~(1<<4);
+			tmp2 = 1;
+		} else {
+			PORTB |= 1<<4;
+			tmp2 = 0;
+		}
+	}
+}
+
+#define RISING_EDGE 1
+#define FALLING_EDGE 0
+
+#define MINONWIDTH 950
+#define MAXONWIDTH 2075
+#define MINOFFWIDTH 12000
+#define MAXOFFWIDTH 24000
+
+typedef struct {
+  uint8_t edge;
+  uint32_t riseTime;
+  uint32_t fallTime;
+  uint32_t lastGoodWidth;
+} tPinTimingData;
+
+tPinTimingData pin;
+
+ISR(PCINT_vect) {
+	uint32_t time;
+	/*
+	if (PINB & 1) {
+		time = milis - pin.fallTime;
+		pin.riseTime = milis;
+		if ((time >= MINOFFWIDTH) && (time <= MAXOFFWIDTH))
+			pin.edge = RISING_EDGE;
+		else
+			pin.edge = FALLING_EDGE; // invalid rising edge detected
+	} else {
+		time = milis - pin.riseTime;
+		pin.fallTime = milis;
+		
+        if ((time >= MINONWIDTH) && (time <= MAXONWIDTH) && (pin.edge == RISING_EDGE)) {
+			pin.lastGoodWidth = time;
+			pin.edge = FALLING_EDGE;
+			
+			
+        }
+	}
+	*/
+
+
+}
+
+int main(void)
+{	
+	DDRB = 0xFC;
+	PORTB = 0x00;
+	OCR0A=0x0;
+	TCCR0A=0b11110111;
+	TCCR0B=0b00000010;
+	
+	
+	
+	OCR1A = 1000;
+	
+	TCCR1A=0;//0b00001010;
+	TCCR1B=(1 << WGM12)|(1 << CS11);
+	TIMSK=1<<OCIE1A;
+	
+	GIMSK = 0x30; //wlaczenie przerwan PCINT 
+	//PCMSK = 0x3; //wlaczenie przerwania tylko dla PB0 
+	
+	sei();
+
+	while(1) {
+		_delay_ms(100);
+		/*OCR0A = 0;
+		_delay_ms(100);
+		OCR0A = 0x10;
+		_delay_ms(100);
+		OCR0A = 0x20;
+		_delay_ms(100);
+		OCR0A = 0x30;
+		_delay_ms(100);
+		OCR0A = 0x40;
+		_delay_ms(100);
+		OCR0A = 0x50;
+		_delay_ms(100);
+		OCR0A = 0x50;
+		_delay_ms(100);
+		OCR0A = 0x60;
+		_delay_ms(100);
+		OCR0A = 0x70;
+		_delay_ms(100);
+		OCR0A = 0x80;
+		_delay_ms(100);
+		OCR0A = 0x90;
+		_delay_ms(100);
+		OCR0A = 0xA0;*/
+		
+		
+	}
 }

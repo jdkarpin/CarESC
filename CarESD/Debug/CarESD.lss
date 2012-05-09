@@ -3,313 +3,499 @@ CarESD.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         00000132  00000000  00000000  00000094  2**1
+  0 .text         00000270  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .data         00000002  00800060  00000132  000001c6  2**0
+  1 .data         00000004  00800060  00000270  00000304  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  2 .bss          00000006  00800062  00800062  000001c8  2**0
+  2 .bss          00000020  00800064  00800064  00000308  2**0
                   ALLOC
-  3 .stab         000006b4  00000000  00000000  000001c8  2**2
+  3 .stab         000006b4  00000000  00000000  00000308  2**2
                   CONTENTS, READONLY, DEBUGGING
-  4 .stabstr      00000085  00000000  00000000  0000087c  2**0
+  4 .stabstr      00000085  00000000  00000000  000009bc  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_aranges 00000020  00000000  00000000  00000901  2**0
+  5 .debug_aranges 00000020  00000000  00000000  00000a41  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_pubnames 000000dc  00000000  00000000  00000921  2**0
+  6 .debug_pubnames 00000145  00000000  00000000  00000a61  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_info   000002a3  00000000  00000000  000009fd  2**0
+  7 .debug_info   000003ee  00000000  00000000  00000ba6  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_abbrev 00000157  00000000  00000000  00000ca0  2**0
+  8 .debug_abbrev 000001b3  00000000  00000000  00000f94  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_line   00000312  00000000  00000000  00000df7  2**0
+  9 .debug_line   00000396  00000000  00000000  00001147  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_frame  000000a0  00000000  00000000  0000110c  2**2
+ 10 .debug_frame  000000c0  00000000  00000000  000014e0  2**2
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_str    00000175  00000000  00000000  000011ac  2**0
+ 11 .debug_str    000001ef  00000000  00000000  000015a0  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_pubtypes 00000038  00000000  00000000  00001321  2**0
+ 12 .debug_loc    00000048  00000000  00000000  0000178f  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 13 .debug_pubtypes 0000004b  00000000  00000000  000017d7  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
 
 00000000 <__vectors>:
-   0:	14 c0       	rjmp	.+40     	; 0x2a <__ctors_end>
-   2:	2c c0       	rjmp	.+88     	; 0x5c <__bad_interrupt>
-   4:	2b c0       	rjmp	.+86     	; 0x5c <__bad_interrupt>
-   6:	2a c0       	rjmp	.+84     	; 0x5c <__bad_interrupt>
-   8:	29 c0       	rjmp	.+82     	; 0x5c <__bad_interrupt>
-   a:	28 c0       	rjmp	.+80     	; 0x5c <__bad_interrupt>
-   c:	27 c0       	rjmp	.+78     	; 0x5c <__bad_interrupt>
-   e:	26 c0       	rjmp	.+76     	; 0x5c <__bad_interrupt>
-  10:	25 c0       	rjmp	.+74     	; 0x5c <__bad_interrupt>
-  12:	24 c0       	rjmp	.+72     	; 0x5c <__bad_interrupt>
-  14:	23 c0       	rjmp	.+70     	; 0x5c <__bad_interrupt>
-  16:	22 c0       	rjmp	.+68     	; 0x5c <__bad_interrupt>
-  18:	21 c0       	rjmp	.+66     	; 0x5c <__bad_interrupt>
-  1a:	20 c0       	rjmp	.+64     	; 0x5c <__bad_interrupt>
-  1c:	1f c0       	rjmp	.+62     	; 0x5c <__bad_interrupt>
-  1e:	1e c0       	rjmp	.+60     	; 0x5c <__bad_interrupt>
-  20:	1d c0       	rjmp	.+58     	; 0x5c <__bad_interrupt>
-  22:	1c c0       	rjmp	.+56     	; 0x5c <__bad_interrupt>
-  24:	1b c0       	rjmp	.+54     	; 0x5c <__bad_interrupt>
-  26:	1a c0       	rjmp	.+52     	; 0x5c <__bad_interrupt>
-  28:	19 c0       	rjmp	.+50     	; 0x5c <__bad_interrupt>
+   0:	12 c0       	rjmp	.+36     	; 0x26 <__ctors_end>
+   2:	2a c0       	rjmp	.+84     	; 0x58 <__bad_interrupt>
+   4:	29 c0       	rjmp	.+82     	; 0x58 <__bad_interrupt>
+   6:	28 c0       	rjmp	.+80     	; 0x58 <__bad_interrupt>
+   8:	86 c0       	rjmp	.+268    	; 0x116 <__vector_4>
+   a:	26 c0       	rjmp	.+76     	; 0x58 <__bad_interrupt>
+   c:	25 c0       	rjmp	.+74     	; 0x58 <__bad_interrupt>
+   e:	24 c0       	rjmp	.+72     	; 0x58 <__bad_interrupt>
+  10:	23 c0       	rjmp	.+70     	; 0x58 <__bad_interrupt>
+  12:	22 c0       	rjmp	.+68     	; 0x58 <__bad_interrupt>
+  14:	21 c0       	rjmp	.+66     	; 0x58 <__bad_interrupt>
+  16:	e0 c0       	rjmp	.+448    	; 0x1d8 <__vector_11>
+  18:	1f c0       	rjmp	.+62     	; 0x58 <__bad_interrupt>
+  1a:	1e c0       	rjmp	.+60     	; 0x58 <__bad_interrupt>
+  1c:	1d c0       	rjmp	.+58     	; 0x58 <__bad_interrupt>
+  1e:	1c c0       	rjmp	.+56     	; 0x58 <__bad_interrupt>
+  20:	1b c0       	rjmp	.+54     	; 0x58 <__bad_interrupt>
+  22:	1a c0       	rjmp	.+52     	; 0x58 <__bad_interrupt>
+  24:	19 c0       	rjmp	.+50     	; 0x58 <__bad_interrupt>
 
-0000002a <__ctors_end>:
-  2a:	11 24       	eor	r1, r1
-  2c:	1f be       	out	0x3f, r1	; 63
-  2e:	cf ed       	ldi	r28, 0xDF	; 223
-  30:	cd bf       	out	0x3d, r28	; 61
+00000026 <__ctors_end>:
+  26:	11 24       	eor	r1, r1
+  28:	1f be       	out	0x3f, r1	; 63
+  2a:	cf ed       	ldi	r28, 0xDF	; 223
+  2c:	cd bf       	out	0x3d, r28	; 61
 
-00000032 <__do_copy_data>:
-  32:	10 e0       	ldi	r17, 0x00	; 0
-  34:	a0 e6       	ldi	r26, 0x60	; 96
-  36:	b0 e0       	ldi	r27, 0x00	; 0
-  38:	e2 e3       	ldi	r30, 0x32	; 50
-  3a:	f1 e0       	ldi	r31, 0x01	; 1
-  3c:	02 c0       	rjmp	.+4      	; 0x42 <__SREG__+0x3>
-  3e:	05 90       	lpm	r0, Z+
-  40:	0d 92       	st	X+, r0
-  42:	a2 36       	cpi	r26, 0x62	; 98
-  44:	b1 07       	cpc	r27, r17
-  46:	d9 f7       	brne	.-10     	; 0x3e <__SP_H__>
+0000002e <__do_copy_data>:
+  2e:	10 e0       	ldi	r17, 0x00	; 0
+  30:	a0 e6       	ldi	r26, 0x60	; 96
+  32:	b0 e0       	ldi	r27, 0x00	; 0
+  34:	e0 e7       	ldi	r30, 0x70	; 112
+  36:	f2 e0       	ldi	r31, 0x02	; 2
+  38:	02 c0       	rjmp	.+4      	; 0x3e <__SP_H__>
+  3a:	05 90       	lpm	r0, Z+
+  3c:	0d 92       	st	X+, r0
+  3e:	a4 36       	cpi	r26, 0x64	; 100
+  40:	b1 07       	cpc	r27, r17
+  42:	d9 f7       	brne	.-10     	; 0x3a <__CCP__+0x6>
 
-00000048 <__do_clear_bss>:
-  48:	10 e0       	ldi	r17, 0x00	; 0
-  4a:	a2 e6       	ldi	r26, 0x62	; 98
-  4c:	b0 e0       	ldi	r27, 0x00	; 0
-  4e:	01 c0       	rjmp	.+2      	; 0x52 <.do_clear_bss_start>
+00000044 <__do_clear_bss>:
+  44:	10 e0       	ldi	r17, 0x00	; 0
+  46:	a4 e6       	ldi	r26, 0x64	; 100
+  48:	b0 e0       	ldi	r27, 0x00	; 0
+  4a:	01 c0       	rjmp	.+2      	; 0x4e <.do_clear_bss_start>
 
-00000050 <.do_clear_bss_loop>:
-  50:	1d 92       	st	X+, r1
+0000004c <.do_clear_bss_loop>:
+  4c:	1d 92       	st	X+, r1
 
-00000052 <.do_clear_bss_start>:
-  52:	a8 36       	cpi	r26, 0x68	; 104
-  54:	b1 07       	cpc	r27, r17
-  56:	e1 f7       	brne	.-8      	; 0x50 <.do_clear_bss_loop>
-  58:	5a d0       	rcall	.+180    	; 0x10e <main>
-  5a:	69 c0       	rjmp	.+210    	; 0x12e <_exit>
+0000004e <.do_clear_bss_start>:
+  4e:	a4 38       	cpi	r26, 0x84	; 132
+  50:	b1 07       	cpc	r27, r17
+  52:	e1 f7       	brne	.-8      	; 0x4c <.do_clear_bss_loop>
+  54:	cb d0       	rcall	.+406    	; 0x1ec <main>
+  56:	0a c1       	rjmp	.+532    	; 0x26c <_exit>
 
-0000005c <__bad_interrupt>:
-  5c:	d1 cf       	rjmp	.-94     	; 0x0 <__vectors>
+00000058 <__bad_interrupt>:
+  58:	d3 cf       	rjmp	.-90     	; 0x0 <__vectors>
 
-0000005e <DriveForward>:
+0000005a <DriveForward>:
 volatile uint8_t timerH = 0;
 volatile uint8_t inittemp = 0;
 volatile uint8_t countDown = 0;
 
 void DriveForward() {
 	PortTmp &= ~_BV(TDriverPinLeft);
-  5e:	80 91 60 00 	lds	r24, 0x0060
+  5a:	80 91 60 00 	lds	r24, 0x0060
 	PortTmp |= _BV(TDriverPinRight);
-  62:	88 7f       	andi	r24, 0xF8	; 248
+  5e:	88 7f       	andi	r24, 0xF8	; 248
 	PortTmp &= ~_BV(TDriverPinPower);
-  64:	82 60       	ori	r24, 0x02	; 2
-  66:	80 93 60 00 	sts	0x0060, r24
+  60:	82 60       	ori	r24, 0x02	; 2
+  62:	80 93 60 00 	sts	0x0060, r24
 }
-  6a:	08 95       	ret
+  66:	08 95       	ret
 
-0000006c <DriveBack>:
+00000068 <DriveBack>:
 
 void DriveBack() {
 	PortTmp |= _BV(TDriverPinLeft);
-  6c:	80 91 60 00 	lds	r24, 0x0060
-  70:	81 60       	ori	r24, 0x01	; 1
+  68:	80 91 60 00 	lds	r24, 0x0060
+  6c:	81 60       	ori	r24, 0x01	; 1
 	PortTmp &= ~_BV(TDriverPinRight);
 	PortTmp &= ~_BV(TDriverPinPower);
-  72:	89 7f       	andi	r24, 0xF9	; 249
-  74:	80 93 60 00 	sts	0x0060, r24
+  6e:	89 7f       	andi	r24, 0xF9	; 249
+  70:	80 93 60 00 	sts	0x0060, r24
 }
-  78:	08 95       	ret
+  74:	08 95       	ret
 
-0000007a <Break>:
+00000076 <Break>:
 
 void Break() {
 	PortTmp |= _BV(TDriverPinLeft);
 	PortTmp |= _BV(TDriverPinRight);
 	PortTmp |= _BV(TDriverPinPower);
-  7a:	80 91 60 00 	lds	r24, 0x0060
-  7e:	87 60       	ori	r24, 0x07	; 7
-  80:	80 93 60 00 	sts	0x0060, r24
+  76:	80 91 60 00 	lds	r24, 0x0060
+  7a:	87 60       	ori	r24, 0x07	; 7
+  7c:	80 93 60 00 	sts	0x0060, r24
 }
-  84:	08 95       	ret
+  80:	08 95       	ret
 
-00000086 <DriverOff>:
+00000082 <DriverOff>:
 
 void DriverOff() {
 	//PortTmp |= _BV(TDriverPinLeft);
 	//PortTmp |= _BV(TDriverPinRight);
 	PortTmp |= _BV(TDriverPinPower);
-  86:	80 91 60 00 	lds	r24, 0x0060
-  8a:	84 60       	ori	r24, 0x04	; 4
-  8c:	80 93 60 00 	sts	0x0060, r24
+  82:	80 91 60 00 	lds	r24, 0x0060
+  86:	84 60       	ori	r24, 0x04	; 4
+  88:	80 93 60 00 	sts	0x0060, r24
 }
-  90:	08 95       	ret
+  8c:	08 95       	ret
 
-00000092 <Forward>:
+0000008e <Forward>:
 
 
 void Forward() {
 	DriverOff();
-  92:	f9 df       	rcall	.-14     	; 0x86 <DriverOff>
+  8e:	f9 df       	rcall	.-14     	; 0x82 <DriverOff>
 	DriveForward();
-  94:	e4 df       	rcall	.-56     	; 0x5e <DriveForward>
+  90:	e4 df       	rcall	.-56     	; 0x5a <DriveForward>
 }
-  96:	08 95       	ret
+  92:	08 95       	ret
 
-00000098 <Backward>:
+00000094 <Backward>:
 
 void Backward() {
 	DriverOff();
-  98:	f6 df       	rcall	.-20     	; 0x86 <DriverOff>
+  94:	f6 df       	rcall	.-20     	; 0x82 <DriverOff>
 	DriveBack();
-  9a:	e8 df       	rcall	.-48     	; 0x6c <DriveBack>
+  96:	e8 df       	rcall	.-48     	; 0x68 <DriveBack>
 }
-  9c:	08 95       	ret
+  98:	08 95       	ret
 
-0000009e <AllOff>:
+0000009a <AllOff>:
 
 void AllOff() {
 	//PortTmp |= _BV(DriverPinLeft);
 	//PortTmp |= _BV(DriverPinRight);
 	PortTmp |= _BV(TDriverPinPower);
-  9e:	80 91 60 00 	lds	r24, 0x0060
-  a2:	84 60       	ori	r24, 0x04	; 4
-  a4:	80 93 60 00 	sts	0x0060, r24
+  9a:	80 91 60 00 	lds	r24, 0x0060
+  9e:	84 60       	ori	r24, 0x04	; 4
+  a0:	80 93 60 00 	sts	0x0060, r24
 }
-  a8:	08 95       	ret
+  a4:	08 95       	ret
 
-000000aa <UpdatePort>:
+000000a6 <UpdatePort>:
 		SetPin(DriverPortPower, DriverPinPower);
 	else
 		ClearPin(DriverPortPower, DriverPinPower);
 	*/
 	
-	if ((PortTmpPrevious&0x7) == (PortTmp &0x7))
-  aa:	20 91 60 00 	lds	r18, 0x0060
-  ae:	30 e0       	ldi	r19, 0x00	; 0
-  b0:	80 91 61 00 	lds	r24, 0x0061
-  b4:	90 e0       	ldi	r25, 0x00	; 0
-  b6:	82 27       	eor	r24, r18
-  b8:	93 27       	eor	r25, r19
-  ba:	87 70       	andi	r24, 0x07	; 7
-  bc:	90 70       	andi	r25, 0x00	; 0
-  be:	00 97       	sbiw	r24, 0x00	; 0
-  c0:	11 f4       	brne	.+4      	; 0xc6 <UpdatePort+0x1c>
-		return
-	
-		
+	if ((PortTmpPrevious & DriverPinRight) == (PortTmp & TDriverPinRight) &&
+  a6:	20 91 61 00 	lds	r18, 0x0061
+  aa:	30 e0       	ldi	r19, 0x00	; 0
+  ac:	a9 01       	movw	r20, r18
+  ae:	42 70       	andi	r20, 0x02	; 2
+  b0:	50 70       	andi	r21, 0x00	; 0
+  b2:	80 91 60 00 	lds	r24, 0x0060
+  b6:	90 e0       	ldi	r25, 0x00	; 0
+  b8:	81 70       	andi	r24, 0x01	; 1
+  ba:	90 70       	andi	r25, 0x00	; 0
+  bc:	48 17       	cp	r20, r24
+  be:	59 07       	cpc	r21, r25
+  c0:	11 f4       	brne	.+4      	; 0xc6 <UpdatePort+0x20>
+  c2:	22 ff       	sbrs	r18, 2
+  c4:	27 c0       	rjmp	.+78     	; 0x114 <__stack+0x35>
+		(PortTmpPrevious & DriverPinLeft) == (PortTmp & TDriverPinLeft))
+		return;
+			
 	ClearPin(DriverPortLeft, DriverPinLeft);
-  c2:	b4 98       	cbi	0x16, 4	; 22
-	else
-		ClearPin(DriverPortPower, DriverPinPower);
-	*/
-	
-	if ((PortTmpPrevious&0x7) == (PortTmp &0x7))
-		return
-  c4:	08 95       	ret
-	
-		
-	ClearPin(DriverPortLeft, DriverPinLeft);
+  c6:	b4 98       	cbi	0x16, 4	; 22
 	ClearPin(DriverPortRight, DriverPinRight);
-  c6:	b2 98       	cbi	0x16, 2	; 22
+  c8:	b2 98       	cbi	0x16, 2	; 22
 	#else
 		//round up by default
 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
 	#endif
 
 	__builtin_avr_delay_cycles(__ticks_dc);
-  c8:	8f ef       	ldi	r24, 0xFF	; 255
-  ca:	90 e7       	ldi	r25, 0x70	; 112
-  cc:	a2 e0       	ldi	r26, 0x02	; 2
-  ce:	81 50       	subi	r24, 0x01	; 1
-  d0:	90 40       	sbci	r25, 0x00	; 0
-  d2:	a0 40       	sbci	r26, 0x00	; 0
-  d4:	e1 f7       	brne	.-8      	; 0xce <UpdatePort+0x24>
-  d6:	00 c0       	rjmp	.+0      	; 0xd8 <UpdatePort+0x2e>
-  d8:	00 00       	nop
-  da:	c9 01       	movw	r24, r18
-  dc:	82 70       	andi	r24, 0x02	; 2
-  de:	90 70       	andi	r25, 0x00	; 0
+  ca:	8f ef       	ldi	r24, 0xFF	; 255
+  cc:	90 e7       	ldi	r25, 0x70	; 112
+  ce:	a2 e0       	ldi	r26, 0x02	; 2
+  d0:	81 50       	subi	r24, 0x01	; 1
+  d2:	90 40       	sbci	r25, 0x00	; 0
+  d4:	a0 40       	sbci	r26, 0x00	; 0
+  d6:	e1 f7       	brne	.-8      	; 0xd0 <UpdatePort+0x2a>
+  d8:	00 c0       	rjmp	.+0      	; 0xda <UpdatePort+0x34>
+  da:	00 00       	nop
 	_delay_ms(100);
 	
 	if (IsPinClear(PortTmp, TDriverPinLeft) && IsPinClear(PortTmp, TDriverPinRight)) {
-  e0:	20 fd       	sbrc	r18, 0
-  e2:	08 c0       	rjmp	.+16     	; 0xf4 <__stack+0x15>
-  e4:	00 97       	sbiw	r24, 0x00	; 0
-  e6:	19 f4       	brne	.+6      	; 0xee <__stack+0xf>
+  dc:	20 91 60 00 	lds	r18, 0x0060
+  e0:	30 e0       	ldi	r19, 0x00	; 0
+  e2:	c9 01       	movw	r24, r18
+  e4:	82 70       	andi	r24, 0x02	; 2
+  e6:	90 70       	andi	r25, 0x00	; 0
+  e8:	20 fd       	sbrc	r18, 0
+  ea:	08 c0       	rjmp	.+16     	; 0xfc <__stack+0x1d>
+  ec:	00 97       	sbiw	r24, 0x00	; 0
+  ee:	19 f4       	brne	.+6      	; 0xf6 <__stack+0x17>
 		ClearPin(DriverPortLeft, DriverPinLeft);
-  e8:	b4 98       	cbi	0x16, 4	; 22
+  f0:	b4 98       	cbi	0x16, 4	; 22
 		ClearPin(DriverPortRight, DriverPinRight);
-  ea:	b2 98       	cbi	0x16, 2	; 22
-  ec:	0b c0       	rjmp	.+22     	; 0x104 <__stack+0x25>
+  f2:	b2 98       	cbi	0x16, 2	; 22
+  f4:	0b c0       	rjmp	.+22     	; 0x10c <__stack+0x2d>
 	} else if (IsPinClear(PortTmp, TDriverPinLeft) && IsPinSet(PortTmp, TDriverPinRight)) {
 		//Turn left
 		ClearPin(DriverPortLeft, DriverPinLeft); 
-  ee:	b4 98       	cbi	0x16, 4	; 22
-		SetPin(DriverPortRight, DriverPinRight);
-  f0:	b2 9a       	sbi	0x16, 2	; 22
-  f2:	08 c0       	rjmp	.+16     	; 0x104 <__stack+0x25>
-		
-	} else if (IsPinSet(PortTmp, TDriverPinLeft) && IsPinClear(PortTmp, TDriverPinRight)) {
-  f4:	00 97       	sbiw	r24, 0x00	; 0
-  f6:	19 f4       	brne	.+6      	; 0xfe <__stack+0x1f>
-		//Turn right
+  f6:	b4 98       	cbi	0x16, 4	; 22
 		SetPin(DriverPortRight, DriverPinRight);
   f8:	b2 9a       	sbi	0x16, 2	; 22
+  fa:	08 c0       	rjmp	.+16     	; 0x10c <__stack+0x2d>
+		
+	} else if (IsPinSet(PortTmp, TDriverPinLeft) && IsPinClear(PortTmp, TDriverPinRight)) {
+  fc:	00 97       	sbiw	r24, 0x00	; 0
+  fe:	19 f4       	brne	.+6      	; 0x106 <__stack+0x27>
+		//Turn right
+		SetPin(DriverPortRight, DriverPinRight);
+ 100:	b2 9a       	sbi	0x16, 2	; 22
 		ClearPin(DriverPortLeft, DriverPinLeft);
-  fa:	b4 98       	cbi	0x16, 4	; 22
-  fc:	03 c0       	rjmp	.+6      	; 0x104 <__stack+0x25>
+ 102:	b4 98       	cbi	0x16, 4	; 22
+ 104:	03 c0       	rjmp	.+6      	; 0x10c <__stack+0x2d>
 	} else if (IsPinSet(PortTmp, TDriverPinLeft) && IsPinSet(PortTmp, TDriverPinRight)) {
 		ClearPin(DriverPortLeft, DriverPinLeft);
-  fe:	b4 98       	cbi	0x16, 4	; 22
+ 106:	b4 98       	cbi	0x16, 4	; 22
 		ClearPin(DriverPortRight, DriverPinRight);		
- 100:	b2 98       	cbi	0x16, 2	; 22
+ 108:	b2 98       	cbi	0x16, 2	; 22
 		ClearPin(DriverPortPower, DriverPinPower);
- 102:	b3 98       	cbi	0x16, 3	; 22
+ 10a:	b3 98       	cbi	0x16, 3	; 22
 	}
 		
 	PortTmpPrevious = PortTmp;
- 104:	80 91 60 00 	lds	r24, 0x0060
- 108:	80 93 61 00 	sts	0x0061, r24
- 10c:	08 95       	ret
+ 10c:	80 91 60 00 	lds	r24, 0x0060
+ 110:	80 93 61 00 	sts	0x0061, r24
+ 114:	08 95       	ret
 
-0000010e <main>:
+00000116 <__vector_4>:
+
+uint32_t fallingEdgeTime = 0;
+uint32_t risingEdgeTime = 0;
+
+ISR(TIMER1_COMPA_vect)
+{
+ 116:	1f 92       	push	r1
+ 118:	0f 92       	push	r0
+ 11a:	0f b6       	in	r0, 0x3f	; 63
+ 11c:	0f 92       	push	r0
+ 11e:	11 24       	eor	r1, r1
+ 120:	2f 93       	push	r18
+ 122:	3f 93       	push	r19
+ 124:	4f 93       	push	r20
+ 126:	5f 93       	push	r21
+ 128:	6f 93       	push	r22
+ 12a:	7f 93       	push	r23
+ 12c:	8f 93       	push	r24
+ 12e:	9f 93       	push	r25
+ 130:	af 93       	push	r26
+ 132:	bf 93       	push	r27
+ 134:	ef 93       	push	r30
+ 136:	ff 93       	push	r31
+	
+	milis++;
+ 138:	60 91 6b 00 	lds	r22, 0x006B
+ 13c:	70 91 6c 00 	lds	r23, 0x006C
+ 140:	80 91 6d 00 	lds	r24, 0x006D
+ 144:	90 91 6e 00 	lds	r25, 0x006E
+ 148:	6f 5f       	subi	r22, 0xFF	; 255
+ 14a:	7f 4f       	sbci	r23, 0xFF	; 255
+ 14c:	8f 4f       	sbci	r24, 0xFF	; 255
+ 14e:	9f 4f       	sbci	r25, 0xFF	; 255
+ 150:	60 93 6b 00 	sts	0x006B, r22
+ 154:	70 93 6c 00 	sts	0x006C, r23
+ 158:	80 93 6d 00 	sts	0x006D, r24
+ 15c:	90 93 6e 00 	sts	0x006E, r25
+	
+	if (milis%100==0) {
+ 160:	24 e6       	ldi	r18, 0x64	; 100
+ 162:	30 e0       	ldi	r19, 0x00	; 0
+ 164:	40 e0       	ldi	r20, 0x00	; 0
+ 166:	50 e0       	ldi	r21, 0x00	; 0
+ 168:	5f d0       	rcall	.+190    	; 0x228 <__udivmodsi4>
+ 16a:	61 15       	cp	r22, r1
+ 16c:	71 05       	cpc	r23, r1
+ 16e:	81 05       	cpc	r24, r1
+ 170:	91 05       	cpc	r25, r1
+ 172:	19 f4       	brne	.+6      	; 0x17a <__vector_4+0x64>
+			OCR0A += 0x10;	
+ 174:	86 b7       	in	r24, 0x36	; 54
+ 176:	80 5f       	subi	r24, 0xF0	; 240
+ 178:	86 bf       	out	0x36, r24	; 54
+	}
+	
+	if (milis%1000==0) {
+ 17a:	60 91 6b 00 	lds	r22, 0x006B
+ 17e:	70 91 6c 00 	lds	r23, 0x006C
+ 182:	80 91 6d 00 	lds	r24, 0x006D
+ 186:	90 91 6e 00 	lds	r25, 0x006E
+ 18a:	28 ee       	ldi	r18, 0xE8	; 232
+ 18c:	33 e0       	ldi	r19, 0x03	; 3
+ 18e:	40 e0       	ldi	r20, 0x00	; 0
+ 190:	50 e0       	ldi	r21, 0x00	; 0
+ 192:	4a d0       	rcall	.+148    	; 0x228 <__udivmodsi4>
+ 194:	61 15       	cp	r22, r1
+ 196:	71 05       	cpc	r23, r1
+ 198:	81 05       	cpc	r24, r1
+ 19a:	91 05       	cpc	r25, r1
+ 19c:	61 f4       	brne	.+24     	; 0x1b6 <__vector_4+0xa0>
+		if (tmp2 == 0) {
+ 19e:	80 91 6a 00 	lds	r24, 0x006A
+ 1a2:	88 23       	and	r24, r24
+ 1a4:	29 f4       	brne	.+10     	; 0x1b0 <__vector_4+0x9a>
+			PORTB &= ~(1<<4);
+ 1a6:	c4 98       	cbi	0x18, 4	; 24
+			tmp2 = 1;
+ 1a8:	81 e0       	ldi	r24, 0x01	; 1
+ 1aa:	80 93 6a 00 	sts	0x006A, r24
+ 1ae:	03 c0       	rjmp	.+6      	; 0x1b6 <__vector_4+0xa0>
+		} else {
+			PORTB |= 1<<4;
+ 1b0:	c4 9a       	sbi	0x18, 4	; 24
+			tmp2 = 0;
+ 1b2:	10 92 6a 00 	sts	0x006A, r1
+		}
+	}
 }
+ 1b6:	ff 91       	pop	r31
+ 1b8:	ef 91       	pop	r30
+ 1ba:	bf 91       	pop	r27
+ 1bc:	af 91       	pop	r26
+ 1be:	9f 91       	pop	r25
+ 1c0:	8f 91       	pop	r24
+ 1c2:	7f 91       	pop	r23
+ 1c4:	6f 91       	pop	r22
+ 1c6:	5f 91       	pop	r21
+ 1c8:	4f 91       	pop	r20
+ 1ca:	3f 91       	pop	r19
+ 1cc:	2f 91       	pop	r18
+ 1ce:	0f 90       	pop	r0
+ 1d0:	0f be       	out	0x3f, r0	; 63
+ 1d2:	0f 90       	pop	r0
+ 1d4:	1f 90       	pop	r1
+ 1d6:	18 95       	reti
+
+000001d8 <__vector_11>:
+  uint32_t lastGoodWidth;
+} tPinTimingData;
+
+tPinTimingData pin;
+
+ISR(PCINT_vect) {
+ 1d8:	1f 92       	push	r1
+ 1da:	0f 92       	push	r0
+ 1dc:	0f b6       	in	r0, 0x3f	; 63
+ 1de:	0f 92       	push	r0
+ 1e0:	11 24       	eor	r1, r1
+        }
+	}
+	*/
+
+
+}
+ 1e2:	0f 90       	pop	r0
+ 1e4:	0f be       	out	0x3f, r0	; 63
+ 1e6:	0f 90       	pop	r0
+ 1e8:	1f 90       	pop	r1
+ 1ea:	18 95       	reti
+
+000001ec <main>:
 
 int main(void)
-{
-	DDRD = 0x3;
- 10e:	83 e0       	ldi	r24, 0x03	; 3
- 110:	81 bb       	out	0x11, r24	; 17
-	PORTD = 0xFF;
- 112:	8f ef       	ldi	r24, 0xFF	; 255
- 114:	82 bb       	out	0x12, r24	; 18
-	DDRB = 0xFF;
- 116:	87 bb       	out	0x17, r24	; 23
-	PORTB = 0xFF;
- 118:	88 bb       	out	0x18, r24	; 24
-	
-	OCR0A=0x1; // przyk³adowe wartoœci 
- 11a:	81 e0       	ldi	r24, 0x01	; 1
- 11c:	86 bf       	out	0x36, r24	; 54
-	OCR0B=0x50; 
- 11e:	80 e5       	ldi	r24, 0x50	; 80
- 120:	8c bf       	out	0x3c, r24	; 60
-	TCCR0A=0b11110111; 
- 122:	87 ef       	ldi	r24, 0xF7	; 247
- 124:	80 bf       	out	0x30, r24	; 48
+{	
+	DDRB = 0xFC;
+ 1ec:	8c ef       	ldi	r24, 0xFC	; 252
+ 1ee:	87 bb       	out	0x17, r24	; 23
+	PORTB = 0x00;
+ 1f0:	18 ba       	out	0x18, r1	; 24
+	OCR0A=0x0;
+ 1f2:	16 be       	out	0x36, r1	; 54
+	TCCR0A=0b11110111;
+ 1f4:	87 ef       	ldi	r24, 0xF7	; 247
+ 1f6:	80 bf       	out	0x30, r24	; 48
 	TCCR0B=0b00000010;
- 126:	82 e0       	ldi	r24, 0x02	; 2
- 128:	83 bf       	out	0x33, r24	; 51
+ 1f8:	82 e0       	ldi	r24, 0x02	; 2
+ 1fa:	83 bf       	out	0x33, r24	; 51
 	
 	
-	TCCR0B=0b00000010;
- 12a:	83 bf       	out	0x33, r24	; 51
- 12c:	ff cf       	rjmp	.-2      	; 0x12c <main+0x1e>
+	
+	OCR1A = 1000;
+ 1fc:	88 ee       	ldi	r24, 0xE8	; 232
+ 1fe:	93 e0       	ldi	r25, 0x03	; 3
+ 200:	9b bd       	out	0x2b, r25	; 43
+ 202:	8a bd       	out	0x2a, r24	; 42
+	
+	TCCR1A=0;//0b00001010;
+ 204:	1f bc       	out	0x2f, r1	; 47
+	TCCR1B=(1 << WGM12)|(1 << CS11);
+ 206:	8a e0       	ldi	r24, 0x0A	; 10
+ 208:	8e bd       	out	0x2e, r24	; 46
+	TIMSK=1<<OCIE1A;
+ 20a:	80 e4       	ldi	r24, 0x40	; 64
+ 20c:	89 bf       	out	0x39, r24	; 57
+	
+	GIMSK = 0x30; //wlaczenie przerwan PCINT 
+ 20e:	80 e3       	ldi	r24, 0x30	; 48
+ 210:	8b bf       	out	0x3b, r24	; 59
+	//PCMSK = 0x3; //wlaczenie przerwania tylko dla PB0 
+	
+	sei();
+ 212:	78 94       	sei
+ 214:	8f ef       	ldi	r24, 0xFF	; 255
+ 216:	90 e7       	ldi	r25, 0x70	; 112
+ 218:	a2 e0       	ldi	r26, 0x02	; 2
+ 21a:	81 50       	subi	r24, 0x01	; 1
+ 21c:	90 40       	sbci	r25, 0x00	; 0
+ 21e:	a0 40       	sbci	r26, 0x00	; 0
+ 220:	e1 f7       	brne	.-8      	; 0x21a <main+0x2e>
+ 222:	00 c0       	rjmp	.+0      	; 0x224 <main+0x38>
+ 224:	00 00       	nop
+ 226:	f6 cf       	rjmp	.-20     	; 0x214 <main+0x28>
 
-0000012e <_exit>:
- 12e:	f8 94       	cli
+00000228 <__udivmodsi4>:
+ 228:	a1 e2       	ldi	r26, 0x21	; 33
+ 22a:	1a 2e       	mov	r1, r26
+ 22c:	aa 1b       	sub	r26, r26
+ 22e:	bb 1b       	sub	r27, r27
+ 230:	fd 01       	movw	r30, r26
+ 232:	0d c0       	rjmp	.+26     	; 0x24e <__udivmodsi4_ep>
 
-00000130 <__stop_program>:
- 130:	ff cf       	rjmp	.-2      	; 0x130 <__stop_program>
+00000234 <__udivmodsi4_loop>:
+ 234:	aa 1f       	adc	r26, r26
+ 236:	bb 1f       	adc	r27, r27
+ 238:	ee 1f       	adc	r30, r30
+ 23a:	ff 1f       	adc	r31, r31
+ 23c:	a2 17       	cp	r26, r18
+ 23e:	b3 07       	cpc	r27, r19
+ 240:	e4 07       	cpc	r30, r20
+ 242:	f5 07       	cpc	r31, r21
+ 244:	20 f0       	brcs	.+8      	; 0x24e <__udivmodsi4_ep>
+ 246:	a2 1b       	sub	r26, r18
+ 248:	b3 0b       	sbc	r27, r19
+ 24a:	e4 0b       	sbc	r30, r20
+ 24c:	f5 0b       	sbc	r31, r21
+
+0000024e <__udivmodsi4_ep>:
+ 24e:	66 1f       	adc	r22, r22
+ 250:	77 1f       	adc	r23, r23
+ 252:	88 1f       	adc	r24, r24
+ 254:	99 1f       	adc	r25, r25
+ 256:	1a 94       	dec	r1
+ 258:	69 f7       	brne	.-38     	; 0x234 <__udivmodsi4_loop>
+ 25a:	60 95       	com	r22
+ 25c:	70 95       	com	r23
+ 25e:	80 95       	com	r24
+ 260:	90 95       	com	r25
+ 262:	9b 01       	movw	r18, r22
+ 264:	ac 01       	movw	r20, r24
+ 266:	bd 01       	movw	r22, r26
+ 268:	cf 01       	movw	r24, r30
+ 26a:	08 95       	ret
+
+0000026c <_exit>:
+ 26c:	f8 94       	cli
+
+0000026e <__stop_program>:
+ 26e:	ff cf       	rjmp	.-2      	; 0x26e <__stop_program>
