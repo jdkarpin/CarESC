@@ -120,28 +120,11 @@ void UpdatePort() {
 }
 
 uint8_t tmp = 0xE0;
-
 uint8_t tmp2 = 0;
-unsigned long milis = 0;
+
+uint16_t ov_counter = 0; 
 
 
-unsigned long long fallingEdgeTime = 0;
-unsigned long long risingEdgeTime = 0;
-
-ISR(TIMER1_COMPA_vect)
-{	
-	milis++;
-	if (milis%100000) {
-		if (tmp2 == 0) {
-			PORTB &= ~1<<4; 
-			tmp2 = 1;
-		} else {
-			PORTB |= 1<<4; 
-			tmp2 = 0; 
-		}
-	}
-	
-}
 
 #define RISING_EDGE 1
 #define FALLING_EDGE 0
@@ -153,86 +136,67 @@ ISR(TIMER1_COMPA_vect)
 
 typedef struct {
   uint8_t edge;
-  unsigned long  riseTime;
-  unsigned long  fallTime;
-  unsigned long  lastGoodWidth;
+  uint16_t  riseTime;
+  uint16_t  fallTime;
+  uint16_t  lastGoodWidth;
 } tPinTimingData;
 
 tPinTimingData pin;
 
-ISR(PCINT_vect) {
-	unsigned long time;
-	if (IsPinSet(PINB, PINB0) > 0) {
+uint16_t rising, falling; 
+uint32_t counts;
 
-		time = milis - pin.fallTime;
-		pin.riseTime = milis;
-		if ((time >= MINOFFWIDTH) && (time <= MAXOFFWIDTH))
-			pin.edge = RISING_EDGE;
-		else
-			pin.edge = FALLING_EDGE; // invalid rising edge detected
-	} else {
-		pin.fallTime = milis;
-		
-        if ((time >= MINONWIDTH) && (time <= MAXONWIDTH) && (pin.edge == RISING_EDGE)) {
-			pin.lastGoodWidth = time;
-			pin.edge = FALLING_EDGE;
-
-        }
-	}
-	
-
-	
-	
-		
+ISR(TIMER1_OVF_vect) {
+	ov_counter++;
 }
+
+ISR(TIMER1_CAPT_vect){
+	uint32_t time;
+	if (IsPinSet(PIND, PIND6) > 0) {		
+		time = (((uint32_t)ov_counter)<<16) + pin.riseTime;
+		if ((time >= MINOFFWIDTH) && (time <= MAXOFFWIDTH)) {
+			ov_counter = 0;
+		}
+
+		pin.riseTime = ICR1; 
+		
+		TCCR1B &= ~(1<<ICES1); 
+		ov_counter=0; 
+		
+	} else { 
+		pin.fallTime = ICR1;
+
+		TCCR1B|=1<<ICES1;
+		time=(uint32_t)pin.fallTime-(uint32_t)pin.riseTime+(((uint32_t)ov_counter)<<16); 
+		if ((time >= MINONWIDTH) && (time <= MAXONWIDTH)) {
+			pin.lastGoodWidth = time;
+		}
+	} 
+} 
 
 int main(void)
 {	
 	DDRB = 0xFC;
-	PORTB = 0x00;
-	OCR0A=0x0;
+	PORTB= 0x0;
+	
+	DDRD = 0x00;
+	PORTD= 0xFF;
+	
+	OCR0A= 0x0;
 	TCCR0A=0b11110111;
-	TCCR0B=0b00000010;
-	
-	
-	
-	OCR1A = 800;
+	TCCR0B=0b00000010;	
 	
 	TCCR1A=0;//0b00001010;
-	TCCR1B=(1 << WGM12)|(1 << CS12);
-	TIMSK=1<<OCIE1A;
+	TCCR1B=(1<<ICNC1)|(1<<ICES1)|(1<<CS11);
+	TIMSK = 1<<TOIE1|1<<ICIE1;
+	//TIMSK=1<<OCIE1B;//|1<<ICIE1;
 	
-	GIMSK = 0x30; //wlaczenie przerwan PCINT 
-	PCMSK = 0x01; //wlaczenie przerwania tylko dla PB0 
+	counts = 0;
+
 	
 	sei();
 
 	while(1) {
 		_delay_ms(100);
-		/*OCR0A = 0;
-		_delay_ms(100);
-		OCR0A = 0x10;
-		_delay_ms(100);
-		OCR0A = 0x20;
-		_delay_ms(100);
-		OCR0A = 0x30;
-		_delay_ms(100);
-		OCR0A = 0x40;
-		_delay_ms(100);
-		OCR0A = 0x50;
-		_delay_ms(100);
-		OCR0A = 0x50;
-		_delay_ms(100);
-		OCR0A = 0x60;
-		_delay_ms(100);
-		OCR0A = 0x70;
-		_delay_ms(100);
-		OCR0A = 0x80;
-		_delay_ms(100);
-		OCR0A = 0x90;
-		_delay_ms(100);
-		OCR0A = 0xA0;*/
-		
-		
 	}
 }
