@@ -36,14 +36,27 @@
 #define DDriverPortRight DDRB
 #define DDriverPortPower DDRB
 
-uint16_t t = 0;
 uint8_t PortTmp = 0xFF;
 uint8_t PortTmpPrevious = 0xFF;
 
-volatile uint8_t timerL = 0;
-volatile uint8_t timerH = 0;
-volatile uint8_t inittemp = 0;
-volatile uint8_t countDown = 0;
+uint8_t tmp = 0xE0;
+uint8_t tmp2 = 0;
+
+uint16_t ov_counter = 0; 
+
+#define MINONWIDTH 950
+#define MAXONWIDTH 2075
+#define MINOFFWIDTH 12000
+#define MAXOFFWIDTH 24000
+
+typedef struct {
+  uint16_t  riseTime;
+  uint16_t  fallTime;
+  uint16_t  lastGoodWidth;
+} tPinTimingData;
+
+tPinTimingData pin;
+
 
 void InitDriver() {
 	//set as out ports
@@ -100,33 +113,41 @@ void AllOff() {
 
 void UpdatePort() {
 	//DRIVE
-	if (IsPinSet(PortTmp, TDriverPinPower)) 
+	
+	uint32_t tmp = (pin.lastGoodWidth - 1000);
+	
+	if (IsPinSet(PortTmp, TDriverPinPower)) {
 		OCR0A = 0xFF;
-	else
-		OCR0A = 0x0;	
+	} else {
+		if (IsPinClear(PortTmp, TDriverPinLeft) && IsPinSet(PortTmp, TDriverPinRight)) {
+			OCR0A = (500-tmp)/2;
+		} else if (IsPinSet(PortTmp, TDriverPinLeft) && IsPinClear(PortTmp, TDriverPinRight)) {
+			OCR0A = (tmp-500)/2;
+		}		
+	}
 	
 	/*if ((PortTmpPrevious & TDriverPinRight) == (PortTmp & TDriverPinRight) &&
 		(PortTmpPrevious & TDriverPinLeft) == (PortTmp & TDriverPinLeft))
 		return;
 	*/		
-	SetPin(DriverPortLeft, DriverPinLeft);
-	SetPin(DriverPortRight, DriverPinRight);
+
 	_delay_ms(100);
 	
 	if (IsPinClear(PortTmp, TDriverPinLeft) && IsPinClear(PortTmp, TDriverPinRight)) {
 		//break
 		//ClearPin(DriverPortLeft, DriverPinLeft);
 		//ClearPin(DriverPortRight, DriverPinRight);
-	} else if (IsPinClear(PortTmp, TDriverPinLeft) && 
-			   IsPinSet(PortTmp, TDriverPinRight)) {
+	} else if (IsPinClear(PortTmp, TDriverPinLeft) && IsPinSet(PortTmp, TDriverPinRight)) {
 		//Forward
 		ClearPin(DriverPortLeft, DriverPinLeft); 
 		SetPin(DriverPortRight, DriverPinRight);
+		//OCR0A = (tmp-500)/2;
 		
 	} else if (IsPinSet(PortTmp, TDriverPinLeft) && IsPinClear(PortTmp, TDriverPinRight)) {
-		//Turn right
+		//Backward
 		SetPin(DriverPortLeft, DriverPinLeft);
 		ClearPin(DriverPortRight, DriverPinRight);
+		//OCR0A = (500-tmp)/2;
 		
 	} else if (IsPinSet(PortTmp, TDriverPinLeft) && IsPinSet(PortTmp, TDriverPinRight)) {
 		SetPin(DriverPortLeft, DriverPinLeft);
@@ -135,24 +156,6 @@ void UpdatePort() {
 		
 	PortTmpPrevious = PortTmp;
 }
-
-uint8_t tmp = 0xE0;
-uint8_t tmp2 = 0;
-
-uint16_t ov_counter = 0; 
-
-#define MINONWIDTH 950
-#define MAXONWIDTH 2075
-#define MINOFFWIDTH 12000
-#define MAXOFFWIDTH 24000
-
-typedef struct {
-  uint16_t  riseTime;
-  uint16_t  fallTime;
-  uint16_t  lastGoodWidth;
-} tPinTimingData;
-
-tPinTimingData pin;
 
 ISR(TIMER1_OVF_vect) {
 	ov_counter++;
@@ -184,18 +187,20 @@ ISR(TIMER1_CAPT_vect){
 
 int main(void)
 {	
-	
+	PortTmp = 0xFF;
+	PortTmpPrevious = 0xFF;
 	
 	DDRB = 0xFC;
-	PORTB= 0x0;
+	PORTB= 0xFF;
 	
 	DDRD = 0x00;
 	PORTD= 0xFF;
 	
 	InitDriver();
+	DriverOff();
 	
 	OCR0A = 0xFF;
-	TCCR0A=0b11110111;
+	TCCR0A=0b10000111;
 	TCCR0B=0b00000010;	
 	
 	TCCR1A=0;
@@ -203,16 +208,14 @@ int main(void)
 	TIMSK = 1<<TOIE1|1<<ICIE1;
 	sei();
 
-	while(1) {
-		if (pin.lastGoodWidth > 1600) { 
+	while(1) {		
+		if (pin.lastGoodWidth > 1550) { 
 			Forward();
-		} else if (pin.lastGoodWidth < 1400) {
+		} else if (pin.lastGoodWidth < 1450) {
 			Backward();
 		} else {
 			DriverOff();	
-		}
-		
+		}		
 		UpdatePort();
-		_delay_ms(100);		
 	}
 }
