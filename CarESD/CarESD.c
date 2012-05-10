@@ -122,29 +122,25 @@ void UpdatePort() {
 uint8_t tmp = 0xE0;
 
 uint8_t tmp2 = 0;
-uint32_t milis = 0;
+unsigned long milis = 0;
 
-uint32_t fallingEdgeTime = 0;
-uint32_t risingEdgeTime = 0;
+
+unsigned long long fallingEdgeTime = 0;
+unsigned long long risingEdgeTime = 0;
 
 ISR(TIMER1_COMPA_vect)
-{
-	
+{	
 	milis++;
-	
-	if (milis%100==0) {
-			OCR0A += 0x10;	
-	}
-	
-	if (milis%1000==0) {
+	if (milis%100000) {
 		if (tmp2 == 0) {
-			PORTB &= ~(1<<4);
+			PORTB &= ~1<<4; 
 			tmp2 = 1;
 		} else {
-			PORTB |= 1<<4;
-			tmp2 = 0;
+			PORTB |= 1<<4; 
+			tmp2 = 0; 
 		}
 	}
+	
 }
 
 #define RISING_EDGE 1
@@ -157,17 +153,17 @@ ISR(TIMER1_COMPA_vect)
 
 typedef struct {
   uint8_t edge;
-  uint32_t riseTime;
-  uint32_t fallTime;
-  uint32_t lastGoodWidth;
+  unsigned long  riseTime;
+  unsigned long  fallTime;
+  unsigned long  lastGoodWidth;
 } tPinTimingData;
 
 tPinTimingData pin;
 
 ISR(PCINT_vect) {
-	uint32_t time;
-	/*
-	if (PINB & 1) {
+	unsigned long time;
+	if (IsPinSet(PINB, PINB0) > 0) {
+
 		time = milis - pin.fallTime;
 		pin.riseTime = milis;
 		if ((time >= MINOFFWIDTH) && (time <= MAXOFFWIDTH))
@@ -175,19 +171,19 @@ ISR(PCINT_vect) {
 		else
 			pin.edge = FALLING_EDGE; // invalid rising edge detected
 	} else {
-		time = milis - pin.riseTime;
 		pin.fallTime = milis;
 		
         if ((time >= MINONWIDTH) && (time <= MAXONWIDTH) && (pin.edge == RISING_EDGE)) {
 			pin.lastGoodWidth = time;
 			pin.edge = FALLING_EDGE;
-			
-			
+
         }
 	}
-	*/
+	
 
-
+	
+	
+		
 }
 
 int main(void)
@@ -200,14 +196,14 @@ int main(void)
 	
 	
 	
-	OCR1A = 1000;
+	OCR1A = 800;
 	
 	TCCR1A=0;//0b00001010;
-	TCCR1B=(1 << WGM12)|(1 << CS11);
+	TCCR1B=(1 << WGM12)|(1 << CS12);
 	TIMSK=1<<OCIE1A;
 	
 	GIMSK = 0x30; //wlaczenie przerwan PCINT 
-	//PCMSK = 0x3; //wlaczenie przerwania tylko dla PB0 
+	PCMSK = 0x01; //wlaczenie przerwania tylko dla PB0 
 	
 	sei();
 
