@@ -36,13 +36,18 @@
 #define DDriverPortRight DDRB
 #define DDriverPortPower DDRB
 
+#define FALSE 0
+#define TRUE 1
+
 uint8_t PortTmp = 0xFF;
 uint8_t PortTmpPrevious = 0xFF;
 
 uint8_t tmp = 0xE0;
 uint8_t tmp2 = 0;
 
-uint16_t ov_counter = 0; 
+uint8_t fail = TRUE;
+
+uint16_t ov_counter = 0;
 
 #define MINONWIDTH 950
 #define MAXONWIDTH 2075
@@ -158,10 +163,21 @@ void UpdatePort() {
 }
 
 ISR(TIMER1_OVF_vect) {
+	if (IsPinSet(PIND, PIND0)) {
+		fail = TRUE;		
+	} else {
+		fail = FALSE;		
+	}		
 	ov_counter++;
 }
 
 ISR(TIMER1_CAPT_vect){
+	if (IsPinSet(PIND, PIND0)) {
+		fail = TRUE;		
+	} else {
+		fail = FALSE;		
+	}	
+	
 	uint32_t time;
 	if (IsPinSet(PIND, PIND6) > 0) {		
 		time = (((uint32_t)ov_counter)<<16) + pin.riseTime;
@@ -199,6 +215,8 @@ int main(void)
 	InitDriver();
 	DriverOff();
 	
+	_delay_ms(2000);
+	
 	OCR0A = 0xFF;
 	TCCR0A=0b10000111;
 	TCCR0B=0b00000010;	
@@ -208,14 +226,18 @@ int main(void)
 	TIMSK = 1<<TOIE1|1<<ICIE1;
 	sei();
 
-	while(1) {		
-		if (pin.lastGoodWidth > 1550) { 
-			Forward();
-		} else if (pin.lastGoodWidth < 1450) {
-			Backward();
+	while(1) {
+		if (fail == FALSE) { //if there is signal
+			if (pin.lastGoodWidth > 1550) { 
+				Forward();
+			} else if (pin.lastGoodWidth < 1450) {
+				Backward();
+			} else {
+				DriverOff();	
+			}	
 		} else {
 			DriverOff();	
-		}		
-		UpdatePort();
+		}
+		UpdatePort(); 
 	}
 }

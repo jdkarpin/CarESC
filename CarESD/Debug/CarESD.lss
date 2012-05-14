@@ -3,33 +3,33 @@ CarESD.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         000002dc  00000000  00000000  00000094  2**1
+  0 .text         00000316  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .data         00000004  00800060  000002dc  00000370  2**0
+  1 .data         00000004  00800060  00000316  000003aa  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  2 .bss          00000009  00800064  00800064  00000374  2**0
+  2 .bss          00000009  00800064  00800064  000003ae  2**0
                   ALLOC
-  3 .stab         000006b4  00000000  00000000  00000374  2**2
+  3 .stab         000006b4  00000000  00000000  000003b0  2**2
                   CONTENTS, READONLY, DEBUGGING
-  4 .stabstr      00000085  00000000  00000000  00000a28  2**0
+  4 .stabstr      00000085  00000000  00000000  00000a64  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_aranges 00000020  00000000  00000000  00000aad  2**0
+  5 .debug_aranges 00000020  00000000  00000000  00000ae9  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_pubnames 000000fa  00000000  00000000  00000acd  2**0
+  6 .debug_pubnames 00000103  00000000  00000000  00000b09  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_info   00000343  00000000  00000000  00000bc7  2**0
+  7 .debug_info   000003a3  00000000  00000000  00000c0c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_abbrev 000001c5  00000000  00000000  00000f0a  2**0
+  8 .debug_abbrev 000001c7  00000000  00000000  00000faf  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_line   00000452  00000000  00000000  000010cf  2**0
+  9 .debug_line   00000499  00000000  00000000  00001176  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_frame  000000d0  00000000  00000000  00001524  2**2
+ 10 .debug_frame  000000d0  00000000  00000000  00001610  2**2
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_str    000001b9  00000000  00000000  000015f4  2**0
+ 11 .debug_str    000001be  00000000  00000000  000016e0  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_loc    00000042  00000000  00000000  000017ad  2**0
+ 12 .debug_loc    00000042  00000000  00000000  0000189e  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_pubtypes 0000004b  00000000  00000000  000017ef  2**0
+ 13 .debug_pubtypes 0000004b  00000000  00000000  000018e0  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -38,7 +38,7 @@ Disassembly of section .text:
    0:	12 c0       	rjmp	.+36     	; 0x26 <__ctors_end>
    2:	2a c0       	rjmp	.+84     	; 0x58 <__bad_interrupt>
    4:	29 c0       	rjmp	.+82     	; 0x58 <__bad_interrupt>
-   6:	ba c0       	rjmp	.+372    	; 0x17c <__vector_3>
+   6:	c2 c0       	rjmp	.+388    	; 0x18c <__vector_3>
    8:	27 c0       	rjmp	.+78     	; 0x58 <__bad_interrupt>
    a:	a1 c0       	rjmp	.+322    	; 0x14e <__vector_5>
    c:	25 c0       	rjmp	.+74     	; 0x58 <__bad_interrupt>
@@ -65,8 +65,8 @@ Disassembly of section .text:
   2e:	10 e0       	ldi	r17, 0x00	; 0
   30:	a0 e6       	ldi	r26, 0x60	; 96
   32:	b0 e0       	ldi	r27, 0x00	; 0
-  34:	ec ed       	ldi	r30, 0xDC	; 220
-  36:	f2 e0       	ldi	r31, 0x02	; 2
+  34:	e6 e1       	ldi	r30, 0x16	; 22
+  36:	f3 e0       	ldi	r31, 0x03	; 3
   38:	02 c0       	rjmp	.+4      	; 0x3e <__SP_H__>
   3a:	05 90       	lpm	r0, Z+
   3c:	0d 92       	st	X+, r0
@@ -87,8 +87,8 @@ Disassembly of section .text:
   4e:	ad 36       	cpi	r26, 0x6D	; 109
   50:	b1 07       	cpc	r27, r17
   52:	e1 f7       	brne	.-8      	; 0x4c <.do_clear_bss_loop>
-  54:	16 d1       	rcall	.+556    	; 0x282 <main>
-  56:	40 c1       	rjmp	.+640    	; 0x2d8 <_exit>
+  54:	26 d1       	rcall	.+588    	; 0x2a2 <main>
+  56:	5d c1       	rjmp	.+698    	; 0x312 <_exit>
 
 00000058 <__bad_interrupt>:
   58:	d3 cf       	rjmp	.-90     	; 0x0 <__vectors>
@@ -338,243 +338,285 @@ ISR(TIMER1_OVF_vect) {
  156:	11 24       	eor	r1, r1
  158:	8f 93       	push	r24
  15a:	9f 93       	push	r25
+	if (IsPinSet(PIND, PIND0)) {
+ 15c:	80 9b       	sbis	0x10, 0	; 16
+ 15e:	04 c0       	rjmp	.+8      	; 0x168 <__vector_5+0x1a>
+		fail = TRUE;		
+ 160:	81 e0       	ldi	r24, 0x01	; 1
+ 162:	80 93 63 00 	sts	0x0063, r24
+ 166:	02 c0       	rjmp	.+4      	; 0x16c <__vector_5+0x1e>
+	} else {
+		fail = FALSE;		
+ 168:	10 92 63 00 	sts	0x0063, r1
+	}		
 	ov_counter++;
- 15c:	80 91 65 00 	lds	r24, 0x0065
- 160:	90 91 66 00 	lds	r25, 0x0066
- 164:	01 96       	adiw	r24, 0x01	; 1
- 166:	90 93 66 00 	sts	0x0066, r25
- 16a:	80 93 65 00 	sts	0x0065, r24
+ 16c:	80 91 65 00 	lds	r24, 0x0065
+ 170:	90 91 66 00 	lds	r25, 0x0066
+ 174:	01 96       	adiw	r24, 0x01	; 1
+ 176:	90 93 66 00 	sts	0x0066, r25
+ 17a:	80 93 65 00 	sts	0x0065, r24
 }
- 16e:	9f 91       	pop	r25
- 170:	8f 91       	pop	r24
- 172:	0f 90       	pop	r0
- 174:	0f be       	out	0x3f, r0	; 63
- 176:	0f 90       	pop	r0
- 178:	1f 90       	pop	r1
- 17a:	18 95       	reti
+ 17e:	9f 91       	pop	r25
+ 180:	8f 91       	pop	r24
+ 182:	0f 90       	pop	r0
+ 184:	0f be       	out	0x3f, r0	; 63
+ 186:	0f 90       	pop	r0
+ 188:	1f 90       	pop	r1
+ 18a:	18 95       	reti
 
-0000017c <__vector_3>:
+0000018c <__vector_3>:
 
 ISR(TIMER1_CAPT_vect){
- 17c:	1f 92       	push	r1
- 17e:	0f 92       	push	r0
- 180:	0f b6       	in	r0, 0x3f	; 63
- 182:	0f 92       	push	r0
- 184:	11 24       	eor	r1, r1
- 186:	2f 93       	push	r18
- 188:	3f 93       	push	r19
- 18a:	4f 93       	push	r20
- 18c:	5f 93       	push	r21
- 18e:	6f 93       	push	r22
- 190:	7f 93       	push	r23
- 192:	8f 93       	push	r24
- 194:	9f 93       	push	r25
- 196:	af 93       	push	r26
- 198:	bf 93       	push	r27
- 19a:	ef 93       	push	r30
- 19c:	ff 93       	push	r31
- 19e:	20 91 67 00 	lds	r18, 0x0067
- 1a2:	30 91 68 00 	lds	r19, 0x0068
- 1a6:	80 91 65 00 	lds	r24, 0x0065
- 1aa:	90 91 66 00 	lds	r25, 0x0066
+ 18c:	1f 92       	push	r1
+ 18e:	0f 92       	push	r0
+ 190:	0f b6       	in	r0, 0x3f	; 63
+ 192:	0f 92       	push	r0
+ 194:	11 24       	eor	r1, r1
+ 196:	2f 93       	push	r18
+ 198:	3f 93       	push	r19
+ 19a:	4f 93       	push	r20
+ 19c:	5f 93       	push	r21
+ 19e:	6f 93       	push	r22
+ 1a0:	7f 93       	push	r23
+ 1a2:	8f 93       	push	r24
+ 1a4:	9f 93       	push	r25
+ 1a6:	af 93       	push	r26
+ 1a8:	bf 93       	push	r27
+ 1aa:	ef 93       	push	r30
+ 1ac:	ff 93       	push	r31
+	if (IsPinSet(PIND, PIND0)) {
+ 1ae:	80 9b       	sbis	0x10, 0	; 16
+ 1b0:	04 c0       	rjmp	.+8      	; 0x1ba <__vector_3+0x2e>
+		fail = TRUE;		
+ 1b2:	81 e0       	ldi	r24, 0x01	; 1
+ 1b4:	80 93 63 00 	sts	0x0063, r24
+ 1b8:	02 c0       	rjmp	.+4      	; 0x1be <__vector_3+0x32>
+	} else {
+		fail = FALSE;		
+ 1ba:	10 92 63 00 	sts	0x0063, r1
+ 1be:	20 91 67 00 	lds	r18, 0x0067
+ 1c2:	30 91 68 00 	lds	r19, 0x0068
+ 1c6:	80 91 65 00 	lds	r24, 0x0065
+ 1ca:	90 91 66 00 	lds	r25, 0x0066
+	}
+	
+	
 	uint32_t time;
 	if (IsPinSet(PIND, PIND6) > 0) {		
- 1ae:	86 9b       	sbis	0x10, 6	; 16
- 1b0:	29 c0       	rjmp	.+82     	; 0x204 <__vector_3+0x88>
+ 1ce:	86 9b       	sbis	0x10, 6	; 16
+ 1d0:	29 c0       	rjmp	.+82     	; 0x224 <__vector_3+0x98>
 		time = (((uint32_t)ov_counter)<<16) + pin.riseTime;
- 1b2:	40 e0       	ldi	r20, 0x00	; 0
- 1b4:	50 e0       	ldi	r21, 0x00	; 0
- 1b6:	20 5e       	subi	r18, 0xE0	; 224
- 1b8:	3e 42       	sbci	r19, 0x2E	; 46
- 1ba:	40 40       	sbci	r20, 0x00	; 0
- 1bc:	50 40       	sbci	r21, 0x00	; 0
- 1be:	a0 e0       	ldi	r26, 0x00	; 0
- 1c0:	b0 e0       	ldi	r27, 0x00	; 0
- 1c2:	dc 01       	movw	r26, r24
- 1c4:	99 27       	eor	r25, r25
- 1c6:	88 27       	eor	r24, r24
+ 1d2:	40 e0       	ldi	r20, 0x00	; 0
+ 1d4:	50 e0       	ldi	r21, 0x00	; 0
+ 1d6:	20 5e       	subi	r18, 0xE0	; 224
+ 1d8:	3e 42       	sbci	r19, 0x2E	; 46
+ 1da:	40 40       	sbci	r20, 0x00	; 0
+ 1dc:	50 40       	sbci	r21, 0x00	; 0
+ 1de:	a0 e0       	ldi	r26, 0x00	; 0
+ 1e0:	b0 e0       	ldi	r27, 0x00	; 0
+ 1e2:	dc 01       	movw	r26, r24
+ 1e4:	99 27       	eor	r25, r25
+ 1e6:	88 27       	eor	r24, r24
 		if ((time >= MINOFFWIDTH) && (time <= MAXOFFWIDTH)) {
- 1c8:	28 0f       	add	r18, r24
- 1ca:	39 1f       	adc	r19, r25
- 1cc:	4a 1f       	adc	r20, r26
- 1ce:	5b 1f       	adc	r21, r27
- 1d0:	21 3e       	cpi	r18, 0xE1	; 225
- 1d2:	6e e2       	ldi	r22, 0x2E	; 46
- 1d4:	36 07       	cpc	r19, r22
- 1d6:	60 e0       	ldi	r22, 0x00	; 0
- 1d8:	46 07       	cpc	r20, r22
- 1da:	60 e0       	ldi	r22, 0x00	; 0
- 1dc:	56 07       	cpc	r21, r22
- 1de:	20 f4       	brcc	.+8      	; 0x1e8 <__vector_3+0x6c>
+ 1e8:	28 0f       	add	r18, r24
+ 1ea:	39 1f       	adc	r19, r25
+ 1ec:	4a 1f       	adc	r20, r26
+ 1ee:	5b 1f       	adc	r21, r27
+ 1f0:	21 3e       	cpi	r18, 0xE1	; 225
+ 1f2:	6e e2       	ldi	r22, 0x2E	; 46
+ 1f4:	36 07       	cpc	r19, r22
+ 1f6:	60 e0       	ldi	r22, 0x00	; 0
+ 1f8:	46 07       	cpc	r20, r22
+ 1fa:	60 e0       	ldi	r22, 0x00	; 0
+ 1fc:	56 07       	cpc	r21, r22
+ 1fe:	20 f4       	brcc	.+8      	; 0x208 <__vector_3+0x7c>
 			ov_counter = 0;
- 1e0:	10 92 66 00 	sts	0x0066, r1
- 1e4:	10 92 65 00 	sts	0x0065, r1
+ 200:	10 92 66 00 	sts	0x0066, r1
+ 204:	10 92 65 00 	sts	0x0065, r1
 		}
 
 		pin.riseTime = ICR1; 
- 1e8:	84 b5       	in	r24, 0x24	; 36
- 1ea:	95 b5       	in	r25, 0x25	; 37
- 1ec:	90 93 68 00 	sts	0x0068, r25
- 1f0:	80 93 67 00 	sts	0x0067, r24
+ 208:	84 b5       	in	r24, 0x24	; 36
+ 20a:	95 b5       	in	r25, 0x25	; 37
+ 20c:	90 93 68 00 	sts	0x0068, r25
+ 210:	80 93 67 00 	sts	0x0067, r24
 		
 		TCCR1B &= ~(1<<ICES1); 
- 1f4:	8e b5       	in	r24, 0x2e	; 46
- 1f6:	8f 7b       	andi	r24, 0xBF	; 191
- 1f8:	8e bd       	out	0x2e, r24	; 46
+ 214:	8e b5       	in	r24, 0x2e	; 46
+ 216:	8f 7b       	andi	r24, 0xBF	; 191
+ 218:	8e bd       	out	0x2e, r24	; 46
 		ov_counter=0; 
- 1fa:	10 92 66 00 	sts	0x0066, r1
- 1fe:	10 92 65 00 	sts	0x0065, r1
- 202:	2e c0       	rjmp	.+92     	; 0x260 <__vector_3+0xe4>
+ 21a:	10 92 66 00 	sts	0x0066, r1
+ 21e:	10 92 65 00 	sts	0x0065, r1
+ 222:	2e c0       	rjmp	.+92     	; 0x280 <__vector_3+0xf4>
 		
 	} else { 
 		pin.fallTime = ICR1;
- 204:	e4 b5       	in	r30, 0x24	; 36
- 206:	f5 b5       	in	r31, 0x25	; 37
- 208:	f0 93 6a 00 	sts	0x006A, r31
- 20c:	e0 93 69 00 	sts	0x0069, r30
+ 224:	e4 b5       	in	r30, 0x24	; 36
+ 226:	f5 b5       	in	r31, 0x25	; 37
+ 228:	f0 93 6a 00 	sts	0x006A, r31
+ 22c:	e0 93 69 00 	sts	0x0069, r30
 
 		TCCR1B|=1<<ICES1;
- 210:	4e b5       	in	r20, 0x2e	; 46
- 212:	40 64       	ori	r20, 0x40	; 64
- 214:	4e bd       	out	0x2e, r20	; 46
+ 230:	4e b5       	in	r20, 0x2e	; 46
+ 232:	40 64       	ori	r20, 0x40	; 64
+ 234:	4e bd       	out	0x2e, r20	; 46
 		time=(uint32_t)pin.fallTime-(uint32_t)pin.riseTime+(((uint32_t)ov_counter)<<16); 
- 216:	a0 e0       	ldi	r26, 0x00	; 0
- 218:	b0 e0       	ldi	r27, 0x00	; 0
- 21a:	dc 01       	movw	r26, r24
- 21c:	99 27       	eor	r25, r25
- 21e:	88 27       	eor	r24, r24
- 220:	a9 01       	movw	r20, r18
- 222:	60 e0       	ldi	r22, 0x00	; 0
- 224:	70 e0       	ldi	r23, 0x00	; 0
- 226:	84 1b       	sub	r24, r20
- 228:	95 0b       	sbc	r25, r21
- 22a:	a6 0b       	sbc	r26, r22
- 22c:	b7 0b       	sbc	r27, r23
- 22e:	9f 01       	movw	r18, r30
- 230:	40 e0       	ldi	r20, 0x00	; 0
- 232:	50 e0       	ldi	r21, 0x00	; 0
- 234:	82 0f       	add	r24, r18
- 236:	93 1f       	adc	r25, r19
- 238:	a4 1f       	adc	r26, r20
- 23a:	b5 1f       	adc	r27, r21
+ 236:	a0 e0       	ldi	r26, 0x00	; 0
+ 238:	b0 e0       	ldi	r27, 0x00	; 0
+ 23a:	dc 01       	movw	r26, r24
+ 23c:	99 27       	eor	r25, r25
+ 23e:	88 27       	eor	r24, r24
+ 240:	a9 01       	movw	r20, r18
+ 242:	60 e0       	ldi	r22, 0x00	; 0
+ 244:	70 e0       	ldi	r23, 0x00	; 0
+ 246:	84 1b       	sub	r24, r20
+ 248:	95 0b       	sbc	r25, r21
+ 24a:	a6 0b       	sbc	r26, r22
+ 24c:	b7 0b       	sbc	r27, r23
+ 24e:	9f 01       	movw	r18, r30
+ 250:	40 e0       	ldi	r20, 0x00	; 0
+ 252:	50 e0       	ldi	r21, 0x00	; 0
+ 254:	82 0f       	add	r24, r18
+ 256:	93 1f       	adc	r25, r19
+ 258:	a4 1f       	adc	r26, r20
+ 25a:	b5 1f       	adc	r27, r21
 		if ((time >= MINONWIDTH) && (time <= MAXONWIDTH)) {
- 23c:	9c 01       	movw	r18, r24
- 23e:	ad 01       	movw	r20, r26
- 240:	26 5b       	subi	r18, 0xB6	; 182
- 242:	33 40       	sbci	r19, 0x03	; 3
- 244:	40 40       	sbci	r20, 0x00	; 0
- 246:	50 40       	sbci	r21, 0x00	; 0
- 248:	26 36       	cpi	r18, 0x66	; 102
- 24a:	64 e0       	ldi	r22, 0x04	; 4
- 24c:	36 07       	cpc	r19, r22
- 24e:	60 e0       	ldi	r22, 0x00	; 0
- 250:	46 07       	cpc	r20, r22
- 252:	60 e0       	ldi	r22, 0x00	; 0
- 254:	56 07       	cpc	r21, r22
- 256:	20 f4       	brcc	.+8      	; 0x260 <__vector_3+0xe4>
+ 25c:	9c 01       	movw	r18, r24
+ 25e:	ad 01       	movw	r20, r26
+ 260:	26 5b       	subi	r18, 0xB6	; 182
+ 262:	33 40       	sbci	r19, 0x03	; 3
+ 264:	40 40       	sbci	r20, 0x00	; 0
+ 266:	50 40       	sbci	r21, 0x00	; 0
+ 268:	26 36       	cpi	r18, 0x66	; 102
+ 26a:	64 e0       	ldi	r22, 0x04	; 4
+ 26c:	36 07       	cpc	r19, r22
+ 26e:	60 e0       	ldi	r22, 0x00	; 0
+ 270:	46 07       	cpc	r20, r22
+ 272:	60 e0       	ldi	r22, 0x00	; 0
+ 274:	56 07       	cpc	r21, r22
+ 276:	20 f4       	brcc	.+8      	; 0x280 <__vector_3+0xf4>
 			pin.lastGoodWidth = time;
- 258:	e7 e6       	ldi	r30, 0x67	; 103
- 25a:	f0 e0       	ldi	r31, 0x00	; 0
- 25c:	95 83       	std	Z+5, r25	; 0x05
- 25e:	84 83       	std	Z+4, r24	; 0x04
+ 278:	e7 e6       	ldi	r30, 0x67	; 103
+ 27a:	f0 e0       	ldi	r31, 0x00	; 0
+ 27c:	95 83       	std	Z+5, r25	; 0x05
+ 27e:	84 83       	std	Z+4, r24	; 0x04
 		}
 	} 
 } 
- 260:	ff 91       	pop	r31
- 262:	ef 91       	pop	r30
- 264:	bf 91       	pop	r27
- 266:	af 91       	pop	r26
- 268:	9f 91       	pop	r25
- 26a:	8f 91       	pop	r24
- 26c:	7f 91       	pop	r23
- 26e:	6f 91       	pop	r22
- 270:	5f 91       	pop	r21
- 272:	4f 91       	pop	r20
- 274:	3f 91       	pop	r19
- 276:	2f 91       	pop	r18
- 278:	0f 90       	pop	r0
- 27a:	0f be       	out	0x3f, r0	; 63
- 27c:	0f 90       	pop	r0
- 27e:	1f 90       	pop	r1
- 280:	18 95       	reti
+ 280:	ff 91       	pop	r31
+ 282:	ef 91       	pop	r30
+ 284:	bf 91       	pop	r27
+ 286:	af 91       	pop	r26
+ 288:	9f 91       	pop	r25
+ 28a:	8f 91       	pop	r24
+ 28c:	7f 91       	pop	r23
+ 28e:	6f 91       	pop	r22
+ 290:	5f 91       	pop	r21
+ 292:	4f 91       	pop	r20
+ 294:	3f 91       	pop	r19
+ 296:	2f 91       	pop	r18
+ 298:	0f 90       	pop	r0
+ 29a:	0f be       	out	0x3f, r0	; 63
+ 29c:	0f 90       	pop	r0
+ 29e:	1f 90       	pop	r1
+ 2a0:	18 95       	reti
 
-00000282 <main>:
+000002a2 <main>:
 
 int main(void)
 {	
- 282:	1f 93       	push	r17
+ 2a2:	1f 93       	push	r17
 	PortTmp = 0xFF;
- 284:	1f ef       	ldi	r17, 0xFF	; 255
- 286:	10 93 60 00 	sts	0x0060, r17
+ 2a4:	1f ef       	ldi	r17, 0xFF	; 255
+ 2a6:	10 93 60 00 	sts	0x0060, r17
 	PortTmpPrevious = 0xFF;
- 28a:	10 93 61 00 	sts	0x0061, r17
+ 2aa:	10 93 61 00 	sts	0x0061, r17
 	
 	DDRB = 0xFC;
- 28e:	8c ef       	ldi	r24, 0xFC	; 252
- 290:	87 bb       	out	0x17, r24	; 23
+ 2ae:	8c ef       	ldi	r24, 0xFC	; 252
+ 2b0:	87 bb       	out	0x17, r24	; 23
 	PORTB= 0xFF;
- 292:	18 bb       	out	0x18, r17	; 24
+ 2b2:	18 bb       	out	0x18, r17	; 24
 	
 	DDRD = 0x00;
- 294:	11 ba       	out	0x11, r1	; 17
+ 2b4:	11 ba       	out	0x11, r1	; 17
 	PORTD= 0xFF;
- 296:	12 bb       	out	0x12, r17	; 18
+ 2b6:	12 bb       	out	0x12, r17	; 18
 	
 	InitDriver();
- 298:	e0 de       	rcall	.-576    	; 0x5a <InitDriver>
+ 2b8:	d0 de       	rcall	.-608    	; 0x5a <InitDriver>
 	DriverOff();
- 29a:	fa de       	rcall	.-524    	; 0x90 <DriverOff>
+ 2ba:	ea de       	rcall	.-556    	; 0x90 <DriverOff>
+ 2bc:	8f ef       	ldi	r24, 0xFF	; 255
+ 2be:	93 ed       	ldi	r25, 0xD3	; 211
+ 2c0:	a0 e3       	ldi	r26, 0x30	; 48
+ 2c2:	81 50       	subi	r24, 0x01	; 1
+ 2c4:	90 40       	sbci	r25, 0x00	; 0
+ 2c6:	a0 40       	sbci	r26, 0x00	; 0
+ 2c8:	e1 f7       	brne	.-8      	; 0x2c2 <main+0x20>
+ 2ca:	00 c0       	rjmp	.+0      	; 0x2cc <main+0x2a>
+ 2cc:	00 00       	nop
+	
+	_delay_ms(2000);
 	
 	OCR0A = 0xFF;
- 29c:	16 bf       	out	0x36, r17	; 54
+ 2ce:	16 bf       	out	0x36, r17	; 54
 	TCCR0A=0b10000111;
- 29e:	87 e8       	ldi	r24, 0x87	; 135
- 2a0:	80 bf       	out	0x30, r24	; 48
+ 2d0:	87 e8       	ldi	r24, 0x87	; 135
+ 2d2:	80 bf       	out	0x30, r24	; 48
 	TCCR0B=0b00000010;	
- 2a2:	82 e0       	ldi	r24, 0x02	; 2
- 2a4:	83 bf       	out	0x33, r24	; 51
+ 2d4:	82 e0       	ldi	r24, 0x02	; 2
+ 2d6:	83 bf       	out	0x33, r24	; 51
 	
 	TCCR1A=0;
- 2a6:	1f bc       	out	0x2f, r1	; 47
+ 2d8:	1f bc       	out	0x2f, r1	; 47
 	TCCR1B=(1<<ICNC1)|(1<<ICES1)|(1<<CS11);
- 2a8:	82 ec       	ldi	r24, 0xC2	; 194
- 2aa:	8e bd       	out	0x2e, r24	; 46
+ 2da:	82 ec       	ldi	r24, 0xC2	; 194
+ 2dc:	8e bd       	out	0x2e, r24	; 46
 	TIMSK = 1<<TOIE1|1<<ICIE1;
- 2ac:	88 e8       	ldi	r24, 0x88	; 136
- 2ae:	89 bf       	out	0x39, r24	; 57
+ 2de:	88 e8       	ldi	r24, 0x88	; 136
+ 2e0:	89 bf       	out	0x39, r24	; 57
 	sei();
- 2b0:	78 94       	sei
+ 2e2:	78 94       	sei
 
-	while(1) {		
-		if (pin.lastGoodWidth > 1550) { 
- 2b2:	80 91 6b 00 	lds	r24, 0x006B
- 2b6:	90 91 6c 00 	lds	r25, 0x006C
- 2ba:	26 e0       	ldi	r18, 0x06	; 6
- 2bc:	8f 30       	cpi	r24, 0x0F	; 15
- 2be:	92 07       	cpc	r25, r18
- 2c0:	10 f0       	brcs	.+4      	; 0x2c6 <main+0x44>
-			Forward();
- 2c2:	ec de       	rcall	.-552    	; 0x9c <Forward>
- 2c4:	07 c0       	rjmp	.+14     	; 0x2d4 <main+0x52>
-		} else if (pin.lastGoodWidth < 1450) {
- 2c6:	25 e0       	ldi	r18, 0x05	; 5
- 2c8:	8a 3a       	cpi	r24, 0xAA	; 170
- 2ca:	92 07       	cpc	r25, r18
- 2cc:	10 f4       	brcc	.+4      	; 0x2d2 <main+0x50>
-			Backward();
- 2ce:	e9 de       	rcall	.-558    	; 0xa2 <Backward>
- 2d0:	01 c0       	rjmp	.+2      	; 0x2d4 <main+0x52>
+	while(1) {
+		if (fail == FALSE) { //if there is signal
+ 2e4:	80 91 63 00 	lds	r24, 0x0063
+ 2e8:	88 23       	and	r24, r24
+ 2ea:	81 f4       	brne	.+32     	; 0x30c <main+0x6a>
+			if (pin.lastGoodWidth > 1550) { 
+ 2ec:	80 91 6b 00 	lds	r24, 0x006B
+ 2f0:	90 91 6c 00 	lds	r25, 0x006C
+ 2f4:	a6 e0       	ldi	r26, 0x06	; 6
+ 2f6:	8f 30       	cpi	r24, 0x0F	; 15
+ 2f8:	9a 07       	cpc	r25, r26
+ 2fa:	10 f0       	brcs	.+4      	; 0x300 <main+0x5e>
+				Forward();
+ 2fc:	cf de       	rcall	.-610    	; 0x9c <Forward>
+ 2fe:	07 c0       	rjmp	.+14     	; 0x30e <main+0x6c>
+			} else if (pin.lastGoodWidth < 1450) {
+ 300:	b5 e0       	ldi	r27, 0x05	; 5
+ 302:	8a 3a       	cpi	r24, 0xAA	; 170
+ 304:	9b 07       	cpc	r25, r27
+ 306:	10 f4       	brcc	.+4      	; 0x30c <main+0x6a>
+				Backward();
+ 308:	cc de       	rcall	.-616    	; 0xa2 <Backward>
+ 30a:	01 c0       	rjmp	.+2      	; 0x30e <main+0x6c>
+			} else {
+				DriverOff();	
+			}	
 		} else {
 			DriverOff();	
- 2d2:	de de       	rcall	.-580    	; 0x90 <DriverOff>
-		}		
-		UpdatePort();
- 2d4:	ef de       	rcall	.-546    	; 0xb4 <UpdatePort>
+ 30c:	c1 de       	rcall	.-638    	; 0x90 <DriverOff>
+		}
+		UpdatePort(); 
+ 30e:	d2 de       	rcall	.-604    	; 0xb4 <UpdatePort>
 	}
- 2d6:	ed cf       	rjmp	.-38     	; 0x2b2 <main+0x30>
+ 310:	e9 cf       	rjmp	.-46     	; 0x2e4 <main+0x42>
 
-000002d8 <_exit>:
- 2d8:	f8 94       	cli
+00000312 <_exit>:
+ 312:	f8 94       	cli
 
-000002da <__stop_program>:
- 2da:	ff cf       	rjmp	.-2      	; 0x2da <__stop_program>
+00000314 <__stop_program>:
+ 314:	ff cf       	rjmp	.-2      	; 0x314 <__stop_program>
