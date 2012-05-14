@@ -80,7 +80,7 @@
     <GenerateEepFile>True</GenerateEepFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="CarESD.c">
+    <Compile Include="CarESC.c">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>

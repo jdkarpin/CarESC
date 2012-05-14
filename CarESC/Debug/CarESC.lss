@@ -1,35 +1,35 @@
 
-CarESD.elf:     file format elf32-avr
+CarESC.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         00000316  00000000  00000000  00000094  2**1
+  0 .text         00000368  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .data         00000004  00800060  00000316  000003aa  2**0
+  1 .data         00000004  00800060  00000368  000003fc  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  2 .bss          00000009  00800064  00800064  000003ae  2**0
+  2 .bss          00000009  00800064  00800064  00000400  2**0
                   ALLOC
-  3 .stab         000006b4  00000000  00000000  000003b0  2**2
+  3 .stab         000006b4  00000000  00000000  00000400  2**2
                   CONTENTS, READONLY, DEBUGGING
-  4 .stabstr      00000085  00000000  00000000  00000a64  2**0
+  4 .stabstr      00000085  00000000  00000000  00000ab4  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_aranges 00000020  00000000  00000000  00000ae9  2**0
+  5 .debug_aranges 00000020  00000000  00000000  00000b39  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_pubnames 00000103  00000000  00000000  00000b09  2**0
+  6 .debug_pubnames 00000103  00000000  00000000  00000b59  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_info   000003a3  00000000  00000000  00000c0c  2**0
+  7 .debug_info   00000463  00000000  00000000  00000c5c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_abbrev 000001c7  00000000  00000000  00000faf  2**0
+  8 .debug_abbrev 000001d8  00000000  00000000  000010bf  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_line   00000499  00000000  00000000  00001176  2**0
+  9 .debug_line   000004f4  00000000  00000000  00001297  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_frame  000000d0  00000000  00000000  00001610  2**2
+ 10 .debug_frame  000000d0  00000000  00000000  0000178c  2**2
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_str    000001be  00000000  00000000  000016e0  2**0
+ 11 .debug_str    000001be  00000000  00000000  0000185c  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_loc    00000042  00000000  00000000  0000189e  2**0
+ 12 .debug_loc    00000042  00000000  00000000  00001a1a  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_pubtypes 0000004b  00000000  00000000  000018e0  2**0
+ 13 .debug_pubtypes 0000004b  00000000  00000000  00001a5c  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -65,7 +65,7 @@ Disassembly of section .text:
   2e:	10 e0       	ldi	r17, 0x00	; 0
   30:	a0 e6       	ldi	r26, 0x60	; 96
   32:	b0 e0       	ldi	r27, 0x00	; 0
-  34:	e6 e1       	ldi	r30, 0x16	; 22
+  34:	e8 e6       	ldi	r30, 0x68	; 104
   36:	f3 e0       	ldi	r31, 0x03	; 3
   38:	02 c0       	rjmp	.+4      	; 0x3e <__SP_H__>
   3a:	05 90       	lpm	r0, Z+
@@ -88,7 +88,7 @@ Disassembly of section .text:
   50:	b1 07       	cpc	r27, r17
   52:	e1 f7       	brne	.-8      	; 0x4c <.do_clear_bss_loop>
   54:	26 d1       	rcall	.+588    	; 0x2a2 <main>
-  56:	5d c1       	rjmp	.+698    	; 0x312 <_exit>
+  56:	86 c1       	rjmp	.+780    	; 0x364 <_exit>
 
 00000058 <__bad_interrupt>:
   58:	d3 cf       	rjmp	.-90     	; 0x0 <__vectors>
@@ -398,8 +398,7 @@ ISR(TIMER1_CAPT_vect){
  1c2:	30 91 68 00 	lds	r19, 0x0068
  1c6:	80 91 65 00 	lds	r24, 0x0065
  1ca:	90 91 66 00 	lds	r25, 0x0066
-	}
-	
+	}	
 	
 	uint32_t time;
 	if (IsPinSet(PIND, PIND6) > 0) {		
@@ -527,96 +526,147 @@ ISR(TIMER1_CAPT_vect){
 int main(void)
 {	
  2a2:	1f 93       	push	r17
+	wdt_enable(WDTO_500MS);
+ 2a4:	2d e0       	ldi	r18, 0x0D	; 13
+ 2a6:	88 e1       	ldi	r24, 0x18	; 24
+ 2a8:	90 e0       	ldi	r25, 0x00	; 0
+ 2aa:	0f b6       	in	r0, 0x3f	; 63
+ 2ac:	f8 94       	cli
+ 2ae:	a8 95       	wdr
+ 2b0:	81 bd       	out	0x21, r24	; 33
+ 2b2:	0f be       	out	0x3f, r0	; 63
+ 2b4:	21 bd       	out	0x21, r18	; 33
+	
 	PortTmp = 0xFF;
- 2a4:	1f ef       	ldi	r17, 0xFF	; 255
- 2a6:	10 93 60 00 	sts	0x0060, r17
+ 2b6:	1f ef       	ldi	r17, 0xFF	; 255
+ 2b8:	10 93 60 00 	sts	0x0060, r17
 	PortTmpPrevious = 0xFF;
- 2aa:	10 93 61 00 	sts	0x0061, r17
+ 2bc:	10 93 61 00 	sts	0x0061, r17
 	
 	DDRB = 0xFC;
- 2ae:	8c ef       	ldi	r24, 0xFC	; 252
- 2b0:	87 bb       	out	0x17, r24	; 23
+ 2c0:	8c ef       	ldi	r24, 0xFC	; 252
+ 2c2:	87 bb       	out	0x17, r24	; 23
 	PORTB= 0xFF;
- 2b2:	18 bb       	out	0x18, r17	; 24
+ 2c4:	18 bb       	out	0x18, r17	; 24
 	
 	DDRD = 0x00;
- 2b4:	11 ba       	out	0x11, r1	; 17
+ 2c6:	11 ba       	out	0x11, r1	; 17
 	PORTD= 0xFF;
- 2b6:	12 bb       	out	0x12, r17	; 18
+ 2c8:	12 bb       	out	0x12, r17	; 18
 	
 	InitDriver();
- 2b8:	d0 de       	rcall	.-608    	; 0x5a <InitDriver>
+ 2ca:	c7 de       	rcall	.-626    	; 0x5a <InitDriver>
 	DriverOff();
- 2ba:	ea de       	rcall	.-556    	; 0x90 <DriverOff>
- 2bc:	8f ef       	ldi	r24, 0xFF	; 255
- 2be:	93 ed       	ldi	r25, 0xD3	; 211
- 2c0:	a0 e3       	ldi	r26, 0x30	; 48
- 2c2:	81 50       	subi	r24, 0x01	; 1
- 2c4:	90 40       	sbci	r25, 0x00	; 0
- 2c6:	a0 40       	sbci	r26, 0x00	; 0
- 2c8:	e1 f7       	brne	.-8      	; 0x2c2 <main+0x20>
- 2ca:	00 c0       	rjmp	.+0      	; 0x2cc <main+0x2a>
- 2cc:	00 00       	nop
+ 2cc:	e1 de       	rcall	.-574    	; 0x90 <DriverOff>
+ 2ce:	8f e7       	ldi	r24, 0x7F	; 127
+ 2d0:	9a e1       	ldi	r25, 0x1A	; 26
+ 2d2:	a6 e0       	ldi	r26, 0x06	; 6
+ 2d4:	81 50       	subi	r24, 0x01	; 1
+ 2d6:	90 40       	sbci	r25, 0x00	; 0
+ 2d8:	a0 40       	sbci	r26, 0x00	; 0
+ 2da:	e1 f7       	brne	.-8      	; 0x2d4 <main+0x32>
+ 2dc:	00 c0       	rjmp	.+0      	; 0x2de <main+0x3c>
+ 2de:	00 00       	nop
 	
-	_delay_ms(2000);
+	_delay_ms(250);
+	wdt_reset();
+ 2e0:	a8 95       	wdr
+ 2e2:	8f e7       	ldi	r24, 0x7F	; 127
+ 2e4:	9a e1       	ldi	r25, 0x1A	; 26
+ 2e6:	a6 e0       	ldi	r26, 0x06	; 6
+ 2e8:	81 50       	subi	r24, 0x01	; 1
+ 2ea:	90 40       	sbci	r25, 0x00	; 0
+ 2ec:	a0 40       	sbci	r26, 0x00	; 0
+ 2ee:	e1 f7       	brne	.-8      	; 0x2e8 <main+0x46>
+ 2f0:	00 c0       	rjmp	.+0      	; 0x2f2 <main+0x50>
+ 2f2:	00 00       	nop
+	_delay_ms(250);
+	wdt_reset();
+ 2f4:	a8 95       	wdr
+ 2f6:	8f e7       	ldi	r24, 0x7F	; 127
+ 2f8:	9a e1       	ldi	r25, 0x1A	; 26
+ 2fa:	a6 e0       	ldi	r26, 0x06	; 6
+ 2fc:	81 50       	subi	r24, 0x01	; 1
+ 2fe:	90 40       	sbci	r25, 0x00	; 0
+ 300:	a0 40       	sbci	r26, 0x00	; 0
+ 302:	e1 f7       	brne	.-8      	; 0x2fc <main+0x5a>
+ 304:	00 c0       	rjmp	.+0      	; 0x306 <main+0x64>
+ 306:	00 00       	nop
+	_delay_ms(250);
+	wdt_reset();
+ 308:	a8 95       	wdr
+ 30a:	8f e7       	ldi	r24, 0x7F	; 127
+ 30c:	9a e1       	ldi	r25, 0x1A	; 26
+ 30e:	a6 e0       	ldi	r26, 0x06	; 6
+ 310:	81 50       	subi	r24, 0x01	; 1
+ 312:	90 40       	sbci	r25, 0x00	; 0
+ 314:	a0 40       	sbci	r26, 0x00	; 0
+ 316:	e1 f7       	brne	.-8      	; 0x310 <main+0x6e>
+ 318:	00 c0       	rjmp	.+0      	; 0x31a <main+0x78>
+ 31a:	00 00       	nop
+	_delay_ms(250);
+	wdt_reset();
+ 31c:	a8 95       	wdr
 	
 	OCR0A = 0xFF;
- 2ce:	16 bf       	out	0x36, r17	; 54
+ 31e:	16 bf       	out	0x36, r17	; 54
 	TCCR0A=0b10000111;
- 2d0:	87 e8       	ldi	r24, 0x87	; 135
- 2d2:	80 bf       	out	0x30, r24	; 48
+ 320:	87 e8       	ldi	r24, 0x87	; 135
+ 322:	80 bf       	out	0x30, r24	; 48
 	TCCR0B=0b00000010;	
- 2d4:	82 e0       	ldi	r24, 0x02	; 2
- 2d6:	83 bf       	out	0x33, r24	; 51
+ 324:	82 e0       	ldi	r24, 0x02	; 2
+ 326:	83 bf       	out	0x33, r24	; 51
 	
 	TCCR1A=0;
- 2d8:	1f bc       	out	0x2f, r1	; 47
+ 328:	1f bc       	out	0x2f, r1	; 47
 	TCCR1B=(1<<ICNC1)|(1<<ICES1)|(1<<CS11);
- 2da:	82 ec       	ldi	r24, 0xC2	; 194
- 2dc:	8e bd       	out	0x2e, r24	; 46
+ 32a:	82 ec       	ldi	r24, 0xC2	; 194
+ 32c:	8e bd       	out	0x2e, r24	; 46
 	TIMSK = 1<<TOIE1|1<<ICIE1;
- 2de:	88 e8       	ldi	r24, 0x88	; 136
- 2e0:	89 bf       	out	0x39, r24	; 57
+ 32e:	88 e8       	ldi	r24, 0x88	; 136
+ 330:	89 bf       	out	0x39, r24	; 57
 	sei();
- 2e2:	78 94       	sei
+ 332:	78 94       	sei
 
 	while(1) {
+		wdt_reset();
+ 334:	a8 95       	wdr
 		if (fail == FALSE) { //if there is signal
- 2e4:	80 91 63 00 	lds	r24, 0x0063
- 2e8:	88 23       	and	r24, r24
- 2ea:	81 f4       	brne	.+32     	; 0x30c <main+0x6a>
+ 336:	80 91 63 00 	lds	r24, 0x0063
+ 33a:	88 23       	and	r24, r24
+ 33c:	81 f4       	brne	.+32     	; 0x35e <main+0xbc>
 			if (pin.lastGoodWidth > 1550) { 
- 2ec:	80 91 6b 00 	lds	r24, 0x006B
- 2f0:	90 91 6c 00 	lds	r25, 0x006C
- 2f4:	a6 e0       	ldi	r26, 0x06	; 6
- 2f6:	8f 30       	cpi	r24, 0x0F	; 15
- 2f8:	9a 07       	cpc	r25, r26
- 2fa:	10 f0       	brcs	.+4      	; 0x300 <main+0x5e>
+ 33e:	80 91 6b 00 	lds	r24, 0x006B
+ 342:	90 91 6c 00 	lds	r25, 0x006C
+ 346:	a6 e0       	ldi	r26, 0x06	; 6
+ 348:	8f 30       	cpi	r24, 0x0F	; 15
+ 34a:	9a 07       	cpc	r25, r26
+ 34c:	10 f0       	brcs	.+4      	; 0x352 <main+0xb0>
 				Forward();
- 2fc:	cf de       	rcall	.-610    	; 0x9c <Forward>
- 2fe:	07 c0       	rjmp	.+14     	; 0x30e <main+0x6c>
+ 34e:	a6 de       	rcall	.-692    	; 0x9c <Forward>
+ 350:	07 c0       	rjmp	.+14     	; 0x360 <main+0xbe>
 			} else if (pin.lastGoodWidth < 1450) {
- 300:	b5 e0       	ldi	r27, 0x05	; 5
- 302:	8a 3a       	cpi	r24, 0xAA	; 170
- 304:	9b 07       	cpc	r25, r27
- 306:	10 f4       	brcc	.+4      	; 0x30c <main+0x6a>
+ 352:	b5 e0       	ldi	r27, 0x05	; 5
+ 354:	8a 3a       	cpi	r24, 0xAA	; 170
+ 356:	9b 07       	cpc	r25, r27
+ 358:	10 f4       	brcc	.+4      	; 0x35e <main+0xbc>
 				Backward();
- 308:	cc de       	rcall	.-616    	; 0xa2 <Backward>
- 30a:	01 c0       	rjmp	.+2      	; 0x30e <main+0x6c>
+ 35a:	a3 de       	rcall	.-698    	; 0xa2 <Backward>
+ 35c:	01 c0       	rjmp	.+2      	; 0x360 <main+0xbe>
 			} else {
 				DriverOff();	
 			}	
 		} else {
 			DriverOff();	
- 30c:	c1 de       	rcall	.-638    	; 0x90 <DriverOff>
+ 35e:	98 de       	rcall	.-720    	; 0x90 <DriverOff>
 		}
 		UpdatePort(); 
- 30e:	d2 de       	rcall	.-604    	; 0xb4 <UpdatePort>
+ 360:	a9 de       	rcall	.-686    	; 0xb4 <UpdatePort>
 	}
- 310:	e9 cf       	rjmp	.-46     	; 0x2e4 <main+0x42>
+ 362:	e8 cf       	rjmp	.-48     	; 0x334 <main+0x92>
 
-00000312 <_exit>:
- 312:	f8 94       	cli
+00000364 <_exit>:
+ 364:	f8 94       	cli
 
-00000314 <__stop_program>:
- 314:	ff cf       	rjmp	.-2      	; 0x314 <__stop_program>
+00000366 <__stop_program>:
+ 366:	ff cf       	rjmp	.-2      	; 0x366 <__stop_program>

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # AvrStudio Solution File, Format Version 11.00
-Project("{D1100916-62DA-4D80-A9B4-55A1E7CCEEB3}") = "CarESD", "CarESD\CarESD.avrgccproj", "{4527E4A9-4F8F-49CD-A011-F0D00378D7FF}"
+Project("{D1100916-62DA-4D80-A9B4-55A1E7CCEEB3}") = "CarESC", "CarESC\CarESC.avrgccproj", "{4527E4A9-4F8F-49CD-A011-F0D00378D7FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

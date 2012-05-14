@@ -10,6 +10,8 @@
 #include <avr/interrupt.h>
 #include <inttypes.h>
 
+#include <avr/wdt.h>
+
 #define F_CPU 8000000UL
 #include <util/delay.h>
 
@@ -203,6 +205,8 @@ ISR(TIMER1_CAPT_vect){
 
 int main(void)
 {	
+	wdt_enable(WDTO_500MS);
+	
 	PortTmp = 0xFF;
 	PortTmpPrevious = 0xFF;
 	
@@ -215,7 +219,14 @@ int main(void)
 	InitDriver();
 	DriverOff();
 	
-	_delay_ms(2000);
+	_delay_ms(250);
+	wdt_reset();
+	_delay_ms(250);
+	wdt_reset();
+	_delay_ms(250);
+	wdt_reset();
+	_delay_ms(250);
+	wdt_reset();
 	
 	OCR0A = 0xFF;
 	TCCR0A=0b10000111;
@@ -227,6 +238,7 @@ int main(void)
 	sei();
 
 	while(1) {
+		wdt_reset();
 		if (fail == FALSE) { //if there is signal
 			if (pin.lastGoodWidth > 1550) { 
 				Forward();
