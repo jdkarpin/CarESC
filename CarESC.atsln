@@ -1,0 +1,20 @@
+
+Microsoft Visual Studio Solution File, Format Version 11.00
+# AvrStudio Solution File, Format Version 11.00
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "CarESC", "CarESC\CarESC.cproj", "{4527E4A9-4F8F-49CD-A011-F0D00378D7FF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4527E4A9-4F8F-49CD-A011-F0D00378D7FF}.Debug|AVR.ActiveCfg = Debug|AVR
+		{4527E4A9-4F8F-49CD-A011-F0D00378D7FF}.Debug|AVR.Build.0 = Debug|AVR
+		{4527E4A9-4F8F-49CD-A011-F0D00378D7FF}.Release|AVR.ActiveCfg = Release|AVR
+		{4527E4A9-4F8F-49CD-A011-F0D00378D7FF}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -62,7 +62,7 @@ typedef struct {
   uint16_t  lastGoodWidth;
 } tPinTimingData;
 
-tPinTimingData pin;
+tPinTimingData pin = {0,0,1500};
 
 
 void InitDriver() {
@@ -165,29 +165,39 @@ void UpdatePort() {
 }
 
 ISR(TIMER1_OVF_vect) {
-	if (IsPinSet(PIND, PIND0)) {
+/*	
+if (IsPinSet(PIND, PIND0)) {
 		fail = TRUE;		
 	} else {
 		fail = FALSE;		
-	}		
+	} 
+*/
 	ov_counter++;
+	
+	if (ov_counter > 3) {
+		fail = TRUE;		
+	} else {
+		fail = FALSE;		
+	}
 }
 
 ISR(TIMER1_CAPT_vect){
+/*
 	if (IsPinSet(PIND, PIND0)) {
 		fail = TRUE;		
 	} else {
 		fail = FALSE;		
 	}	
+*/
 	
 	uint32_t time;
 	if (IsPinSet(PIND, PIND6) > 0) {		
 		time = (((uint32_t)ov_counter)<<16) + pin.riseTime;
 		if ((time >= MINOFFWIDTH) && (time <= MAXOFFWIDTH)) {
 			ov_counter = 0;
-		}
-
-		pin.riseTime = ICR1; 
+		} 
+		
+		pin.riseTime = ICR1;
 		
 		TCCR1B &= ~(1<<ICES1); 
 		ov_counter=0; 
@@ -199,7 +209,7 @@ ISR(TIMER1_CAPT_vect){
 		time=(uint32_t)pin.fallTime-(uint32_t)pin.riseTime+(((uint32_t)ov_counter)<<16); 
 		if ((time >= MINONWIDTH) && (time <= MAXONWIDTH)) {
 			pin.lastGoodWidth = time;
-		}
+		} 
 	} 
 } 
 
@@ -227,14 +237,29 @@ int main(void)
 	wdt_reset();
 	_delay_ms(250);
 	wdt_reset();
+	_delay_ms(250);
+	wdt_reset();
+	_delay_ms(250);
+	wdt_reset();
+	_delay_ms(250);
+	wdt_reset();
+	_delay_ms(250);
+	wdt_reset();
 	
 	OCR0A = 0xFF;
-	TCCR0A=0b10000111;
-	TCCR0B=0b00000010;	
+	TCCR0A=0b10000111; //Clear OC0A on Compare Match // Fast PWM
+	TCCR0B=0b00000010; //clk/8 // clk=8mhz/8= 1mhz
 	
-	TCCR1A=0;
-	TCCR1B=(1<<ICNC1)|(1<<ICES1)|(1<<CS11);
+	TCCR1A=0; //Normal port operation // WGM - Normal
+	TCCR1B=(1<<ICNC1)|(1<<ICES1)|(1<<CS11); 
+	//Bit 7 – ICNC1: Input Capture Noise Canceler
+	//Bit 6 – ICES1: Input Capture Edge Select
+	//Bit 2:0 - CS12/CS11/CS10 - Clock select bits - 1Mhz (clk 8Mhz/8)
+	
 	TIMSK = 1<<TOIE1|1<<ICIE1;
+	//TOIE1: Timer/Counter1, Overflow Interrupt Enable
+	//ICIE1: Timer/Counter1, Input Capture Interrupt Enable
+	
 	sei();
 
 	while(1) {
